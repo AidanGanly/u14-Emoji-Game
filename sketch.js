@@ -1,8 +1,7 @@
 var SETTINGS = {
   PHYSICS : {
     CHARACTER : {
-      MoveArmsOnShoot : true,
-      MoveLegsOnWalk  : true
+      MoveLegsOnWalk : true
     }
   }
 }
@@ -10,11 +9,11 @@ var SETTINGS = {
 var floor;
 var character;
 var img;
+var titleImage
 
 function connect(obj, obj2, stiffness){
   return matter.connect(obj, obj2, {
     stiffness: (stiffness ? stiffness : 1.5),
-    //length: 0.7 * dist(obj.getPositionX(), obj.getPositionY(), obj2.getPositionX(), obj2.getPositionY()),
   })
 }
 
@@ -33,25 +32,18 @@ function setup() {
     }
   }
 
-  black_square = loadImage("images/black_square.png");
-  //
-  pistol_right = loadImage("images/pistol_right.png");
-  pistol_left  = loadImage("images/pistol_left.png");
-  //
-  rocket_left   = loadImage("images/rocket_left.png");
-  rocket_right  = loadImage("images/rocket_right.png");
+  black_square = loadImage("images/black_square.png")
+  pistol_left = loadImage("images/pistol_left.png")
+  pistol_right = loadImage("images/pistol_right.png")
+  rocket_left  = loadImage("images/rocket_left.png")
+  rocket_right = loadImage("images/rocket_right.png")
+  titleImage   = loadImage("images/title.png")
 
   var x = width / 2;
   var y = height / 2;
 
   var text_mid_x = width / 2;
   var text_mid_y = height / 2;
-
-  newText = {
-    E : {
-      EBR3 : matter.makeBarrier(text_mid_x - (40 * 3))
-    }
-  }
 
   character = {
     body : {
@@ -105,7 +97,6 @@ function setup() {
     },
     stats : {},
   }
-
   connections = {
     head : {
       NK_HM : connect(character.body.head.NK, character.body.head.HM),
@@ -141,9 +132,9 @@ function setup() {
       //
       TR3_TR2 : connect(character.body.torso.TR3, character.body.torso.TR2),
       TR2_TR1 : connect(character.body.torso.TR2, character.body.torso.TR1),
-      //\\|//\\|
-      //\\|//\\|
-      //\\|//\\|
+      //\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|
+      //\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|
+      //\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|
       TL1_TM2 : connect(character.body.torso.TL1, character.body.torso.TM2),
       TR1_TR2 : connect(character.body.torso.TR1, character.body.torso.TM2),
       //
@@ -278,7 +269,7 @@ function keyPressed() {
     setPosition('RESET')
   }
 
-  if (keyIsDown(45)){
+  if (keyIsDown(96)){
     image(rocket_left, character.body.left_arm.L1.getPositionX() + RIGHT_X, (character.body.left_arm.L1.getPositionY() - 10) + random(-15, -5), 40, 40);
     RIGHT_X = RIGHT_X + 30;
 
@@ -334,6 +325,10 @@ function draw() {
   background(0);
   keyPressed();
   fill(127);
+
+  // Show title
+  // image(titleImage, width/6.5, height/9, (1000) * 2, (1000/2.5) * 2)
+  // End title thing
 
   function create(data){
     _.each(data, function(DATA, ALIAS){
