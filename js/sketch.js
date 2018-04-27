@@ -33,11 +33,12 @@ function setup() {
   }
 
   black_square = loadImage("images/black_square.png")
-  pistol_left = loadImage("images/pistol_left.png")
+  pistol_left  = loadImage("images/pistol_left.png")
   pistol_right = loadImage("images/pistol_right.png")
   rocket_left  = loadImage("images/rocket_left.png")
   rocket_right = loadImage("images/rocket_right.png")
   titleImage   = loadImage("images/title.png")
+  respawn      = loadImage("images/respawn.png")
 
   var x = width / 2;
   var y = height / 2;
@@ -205,6 +206,7 @@ function setup() {
 
 NY = 0;
 NX = 0;
+NumberRotateX = 0
 
 function setPosition(DIR){
   _.each(character.body, function(ARRAY){
@@ -221,9 +223,10 @@ function setPosition(DIR){
         } else if (DIR === 'RIGHT'){
           DATA.setPositionX(DATA.getPositionX() + 5)
         } else if (DIR === 'RESET'){
-          // DATA.setPosition(DATA.getPositionY() + radians(NY), DATA.getPositionX() + radians(NX));
-          // NY = NY + 1;
-          // NX = NX + 1;
+          DATA.body.angle = NumberRotateX
+          NumberRotateX = NumberRotateX + 0.0015
+          current_object = character.body.torso.TM2;
+          image(respawn, current_object.getPositionX() - 200, current_object.getPositionY() - 200, 400, 400);
         }
       }
     })
@@ -269,8 +272,9 @@ function keyPressed() {
     setPosition('RESET')
   }
 
-  if (keyIsDown(96)){
+  if (keyIsDown(45)){
     image(rocket_left, character.body.left_arm.L1.getPositionX() + RIGHT_X, (character.body.left_arm.L1.getPositionY() - 10) + random(-15, -5), 40, 40);
+
     RIGHT_X = RIGHT_X + 30;
 
     RIGHT_REAL_X = 50 + RIGHT_X;
@@ -288,6 +292,7 @@ function keyPressed() {
         })
       })
     }
+
   } else {
     if (!keyIsDown(17)){
       RIGHT_X = 0
@@ -326,9 +331,6 @@ function draw() {
   keyPressed();
   fill(127);
 
-  // Show title
-  // image(titleImage, width/6.5, height/9, (1000) * 2, (1000/2.5) * 2)
-  // End title thing
 
   function create(data){
     _.each(data, function(DATA, ALIAS){
