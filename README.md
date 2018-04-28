@@ -63,4 +63,5 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | Allowed player to right the character when it falls over | 25 APR |
 | Code optimization - did away with redundent variables | 26 APR |
 | Code optimization - converted to class based system and switched from `if` statements to `switch/case` statements | 27 APR |
+| Created this readme.md document | 28 APR |
 
