@@ -1,4 +1,5 @@
 # u14-Emoji-Game
+# ⚠ Not finished
 
 Emoji based game for unit 14. 
 
