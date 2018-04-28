@@ -17,10 +17,10 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | Implement keyboard controls | ✅ |
 | Implement shooting mechanics | ✅ |
 | Implement mechanics to allow the player to adjust the rotation of the character in case of it falling over | ✅ |
-| Convert to classes, allowing the code to be expandable | ❌ - 1/3 |
-| Convert character to class | ✅ |
-| Add keystroke listeners to class | ❌ |
-| Add team colours to class | ❌ |
+| [CLASS: 1/4] Convert to classes, allowing the code to be expandable | ❌ - 1/4 |
+| [CLASS: 2/4] Convert character to class | ✅ |
+| [CLASS: 3/4] Add keystroke listeners to class | ❌ |
+| [CLASS: 4/4] Add team colours to class | ❌ |
 | Implement lives | ❌ |
 | Add collison detection for rockets | ❌ |
 | Apply a positive force, relative to rocket speed to the part the rocket hits, thus causing the opposing player to catipult in the opposite direction and loose a life | ❌ |
@@ -54,7 +54,7 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 
 #### Update log
 | Task | Date |
-| ---- | ---- |
+| ---- | ------- |
 | Created mockup | 3 APR |
 | Implemented keyboard controls | 4 APR |
 | Implemented shooting mechanics | 4 APR |
