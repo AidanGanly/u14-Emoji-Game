@@ -75,31 +75,68 @@ class CharacterClass {
       _this.manipulateCharacter('RESET')
     }
     if (keyIsDown(_this.KEYS.SHOOT_RIGHT)) {
-      image(Images.rocket_left, _this.Character.Body.right_arm.R1.getPositionX() + _this.RIGHT_X, (_this.Character.Body.right_arm.R1.getPositionY() - 10) + random(-15, -5), 40, 40);
-      _this.RIGHT_X = _this.RIGHT_X - 30
-      var STARTED_AT = _this.Character.Body.right_arm.R1.getPositionX()
 
+      var STARTED_AT = _this.Character.Body.right_arm.R1.getPositionX()
+      _this.RIGHT_X = _this.RIGHT_X - 30
       _this.RIGHT_REAL_X = _this.RIGHT_X;
 
-      for (let Char in Players){
-        console.log("NEW CHARACTER")
-        _.each(Players[Char].CharacterBody.Body, function(ARRAY){
-          _.each(ARRAY, function(DATA, NAME){
-            if (NAME !== '__COLOUR'){
-              var OpposingX = DATA.body.position.x
-              var OpposingY = DATA.body.position.y
+      var BulletPositionX     = ( _this.Character.Body.right_arm.R1.getPositionX() + _this.RIGHT_X )
+      var BulletPositionY     = ( (_this.Character.Body.right_arm.R1.getPositionY() - 10) + random(-15, -5) )
 
-              var BulletPositionX     = ( _this.Character.Body.right_arm.R1.getPositionX() + _this.RIGHT_X )
-              var BulletPositionY     = ( (_this.Character.Body.right_arm.R1.getPositionY() - 10) + random(-15, -5) )
+      image(Images.rocket_left, BulletPositionX, BulletPositionY, 40, 40);
 
-              console.log(NAME, Math.round(OpposingX), Math.round(OpposingY))
-              console.log(Math.round(BulletPositionX), Math.round(BulletPositionY))
-              console.log(OpposingX == BulletPositionX, OpposingY == BulletPositionY)
-              console.log('-------------------------------------')
+      //for (let Char in Players){
+      _.each(Players[1].CharacterBody.Body, function(ARRAY){
+        _.each(ARRAY, function(DATA, NAME){
+          if (NAME !== '__COLOUR'){
+            var OpposingX = DATA.body.position.x
+            var OpposingY = DATA.body.position.y
+
+            var BulletPositionX     = ( _this.Character.Body.right_arm.R1.getPositionX() + _this.RIGHT_X )
+            var BulletPositionY     = ( (_this.Character.Body.right_arm.R1.getPositionY() - 10) + random(-15, -5) )
+
+            //console.log(NAME)
+            //console.log(Math.round(OpposingX),       Math.round(OpposingY))
+            //console.log(Math.round(BulletPositionX), Math.round(BulletPositionY))
+            var a = Math.abs(Math.round(BulletPositionX) - Math.round(OpposingX))
+            var b = Math.abs(Math.round(BulletPositionY) - Math.round(OpposingY))
+
+            var c
+
+            if (a>b){
+              c = b-a
+            } else {
+              c = a-b
             }
-          })
+
+            if (c > -5 && c < 5){
+              console.log(DATA)
+            }
+
+            //if (Math.round(OpposingX) == Math.round(BulletPositionX) ||	 Math.round(OpposingY) == Math.round(BulletPositionY)){
+            //  console.log(DATA)
+            //  DATA.body.force.x = -2
+            //}
+
+            //console.log(Math.round(OpposingY) == Math.round(BulletPositionY))
+            //console.log('------------')
+
+            //if ( ((Math.round(OpposingX) - Math.round(BulletPositionX)) < 10) && ((Math.round(OpposingY) - Math.round(BulletPositionY)) < 10) ){
+            //  console.log(NAME)
+            //}
+
+            //if (((OpposingX - BulletPositionX) < 20) || ((OpposingY - BulletPositionY) < 20)) {
+            //  console.log(NAME)
+            //}
+
+            //console.log(
+            //  (OpposingX - BulletPositionX),
+            //  (OpposingY - BulletPositionY)
+            //)
+          }
         })
-      }
+      })
+      //}
 
       if ((_this.RIGHT_REAL_X * -1/2) - (STARTED_AT/2)-61 > 0){
         _this.RIGHT_X = 0
