@@ -1,21 +1,9 @@
-var [x, y] = [40, 40]
-
-const KEYS = {}
-
-NumberRotateX = 0
-
 const SETTINGS = {
   PHYSICS : {
     CHARACTER : {
       MoveLegsOnWalk : true
     }
   }
-}
-
-function connect(obj, obj2, stiffness){
-  return matter.connect(obj, obj2, {
-    stiffness: (stiffness ? stiffness : 1.5),
-  })
 }
 
 class CharacterClass {
@@ -27,7 +15,10 @@ class CharacterClass {
 
     this.RIGHT_X      = 0
     this.RIGHT_REAL_X = 0
+
+    this.NumberRotateX = 0
   }
+
   manipulateCharacter(DIR){
     var _this = this
     _.each(this.Character.Body, function(ARRAY){
@@ -44,8 +35,8 @@ class CharacterClass {
           } else if (DIR === 'RIGHT'){
             DATA.setPositionX(DATA.getPositionX() + 5)
           } else if (DIR === 'RESET'){
-            DATA.body.angle = NumberRotateX
-            NumberRotateX = NumberRotateX + 0.0015
+            DATA.body.angle = _this.NumberRotateX
+            _this.NumberRotateX = _this.NumberRotateX + 0.0015
             image(Images.respawn, _this.Character.Body.torso.TM2.getPositionX() - 200, _this.Character.Body.torso.TM2.getPositionY() - 200, 400, 400);
           }
         }
@@ -56,6 +47,17 @@ class CharacterClass {
   setKeys(DICT){
     this.KEYS = DICT
     return this
+  }
+
+  setSpawn(x,y){
+    this.x = x; this.y = y;
+    return this
+  }
+
+  connect(obj, obj2, stiffness){
+    return this.ENV.Matter.connect(obj, obj2, {
+      stiffness: (stiffness ? stiffness : 1.5),
+    })
   }
 
   listenKeys(){
@@ -79,6 +81,26 @@ class CharacterClass {
 
       _this.RIGHT_REAL_X = _this.RIGHT_X;
 
+      for (let Char in Players){
+        console.log("NEW CHARACTER")
+        _.each(Players[Char].CharacterBody.Body, function(ARRAY){
+          _.each(ARRAY, function(DATA, NAME){
+            if (NAME !== '__COLOUR'){
+              var OpposingX = DATA.body.position.x
+              var OpposingY = DATA.body.position.y
+
+              var BulletPositionX     = ( _this.Character.Body.right_arm.R1.getPositionX() + _this.RIGHT_X )
+              var BulletPositionY     = ( (_this.Character.Body.right_arm.R1.getPositionY() - 10) + random(-15, -5) )
+
+              console.log(NAME, Math.round(OpposingX), Math.round(OpposingY))
+              console.log(Math.round(BulletPositionX), Math.round(BulletPositionY))
+              console.log(OpposingX == BulletPositionX, OpposingY == BulletPositionY)
+              console.log('-------------------------------------')
+            }
+          })
+        })
+      }
+
       if ((_this.RIGHT_REAL_X * -1/2) - (STARTED_AT/2)-61 > 0){
         _this.RIGHT_X = 0
       }
@@ -93,39 +115,42 @@ class CharacterClass {
        })
      }
    } else {
-       if (!keyIsDown(45)){
+       if (!keyIsDown(_this.KEYS.SHOOT_LEFT)){
          _this.RIGHT_X = 0
        }
     }
 
     if (keyIsDown(_this.KEYS.SHOOT_LEFT)) {
-      image(Images.rocket_right, _this.Character.Body.right_arm.R1.getPositionX() + _this.LEFT_X, (_this.Character.Body.right_arm.R1.getPositionY() - 10) + random(-15, -5), 40, 40);
-      _this.LEFT_X = _this.LEFT_X - 30
-      var STARTED_AT = _this.Character.Body.left_arm.L1.getPositionX()
+      image(Images.rocket_right, _this.Character.Body.left_arm.L1.getPositionX() + _this.LEFT_X, (_this.Character.Body.left_arm.L1.getPositionY() - 10) + random(-15, -5), 40, 40);
 
-      _this.LEFT_REAL_X = _this.LEFT_X;
+      _this.LEFT_X = _this.LEFT_X + 30;
 
-      if ((_this.LEFT_REAL_X * -1/2) - (STARTED_AT/2)-61 > 0){
+      _this.LEFT_REAL_X = 50 + _this.LEFT_X;
+
+      if (_this.LEFT_REAL_X > width){
         _this.LEFT_X = 0
       }
 
       if (SETTINGS.PHYSICS.CHARACTER.MoveArmsOnShoot === true){
-        _.each(_this.Character.Body, function(ARRAY){
+        _.each(character.body, function(ARRAY){
           _.each(ARRAY, function(DATA, NAME){
-           if (NAME === 'R1'){
-             DATA.setPositionY(DATA.getPositionY() - 30)
-           }
-         })
-       })
-     }
+            if (NAME === 'L1'){
+              DATA.setPositionY(DATA.getPositionY() - 30)
+            }
+          })
+        })
+      }
    } else {
-       if (!keyIsDown(45)){
+       if (!keyIsDown(_this.KEYS.SHOOT_RIGHT)){
          _this.LEFT_X = 0
        }
     }
   }
 
   initCharacter(){
+
+    var [x,y] = [this.x, this.y]
+
     this.Character = {
       Body        : {},
       Connections : {}
@@ -182,106 +207,106 @@ class CharacterClass {
     },
     this.Character.Connections = {
       head : {
-        NK_HM : connect(this.Character.Body.head.NK, this.Character.Body.head.HM),
-        HM_HL : connect(this.Character.Body.head.HM, this.Character.Body.head.HL),
-        HM_HR : connect(this.Character.Body.head.HM, this.Character.Body.head.HR),
+        NK_HM : this.connect(this.Character.Body.head.NK, this.Character.Body.head.HM),
+        HM_HL : this.connect(this.Character.Body.head.HM, this.Character.Body.head.HL),
+        HM_HR : this.connect(this.Character.Body.head.HM, this.Character.Body.head.HR),
         //
-        NK_HL : connect(this.Character.Body.head.NK, this.Character.Body.head.HL),
-        NK_HR : connect(this.Character.Body.head.NK, this.Character.Body.head.HR),
+        NK_HL : this.connect(this.Character.Body.head.NK, this.Character.Body.head.HL),
+        NK_HR : this.connect(this.Character.Body.head.NK, this.Character.Body.head.HR),
       },
       torso_head : {
-        TM3_NK : connect(this.Character.Body.torso.TM3, this.Character.Body.head.NK),
-        TL3_NK : connect(this.Character.Body.torso.TL3, this.Character.Body.head.NK),
-        TR3_NK : connect(this.Character.Body.torso.TR3, this.Character.Body.head.NK),
+        TM3_NK : this.connect(this.Character.Body.torso.TM3, this.Character.Body.head.NK),
+        TL3_NK : this.connect(this.Character.Body.torso.TL3, this.Character.Body.head.NK),
+        TR3_NK : this.connect(this.Character.Body.torso.TR3, this.Character.Body.head.NK),
       },
       torso : {
-        TM1_TL1 : connect(this.Character.Body.torso.TM1, this.Character.Body.torso.TL1),
-        TM1_TR1 : connect(this.Character.Body.torso.TM1, this.Character.Body.torso.TR1),
+        TM1_TL1 : this.connect(this.Character.Body.torso.TM1, this.Character.Body.torso.TL1),
+        TM1_TR1 : this.connect(this.Character.Body.torso.TM1, this.Character.Body.torso.TR1),
         //
-        TM2_TL2 : connect(this.Character.Body.torso.TM2, this.Character.Body.torso.TL2),
-        TM2_TR2 : connect(this.Character.Body.torso.TM2, this.Character.Body.torso.TR2),
+        TM2_TL2 : this.connect(this.Character.Body.torso.TM2, this.Character.Body.torso.TL2),
+        TM2_TR2 : this.connect(this.Character.Body.torso.TM2, this.Character.Body.torso.TR2),
         //
-        TM3_TL1 : connect(this.Character.Body.torso.TM3, this.Character.Body.torso.TL3),
-        TM3_TR1 : connect(this.Character.Body.torso.TM3, this.Character.Body.torso.TR3),
+        TM3_TL1 : this.connect(this.Character.Body.torso.TM3, this.Character.Body.torso.TL3),
+        TM3_TR1 : this.connect(this.Character.Body.torso.TM3, this.Character.Body.torso.TR3),
         //
-        TL1_TL2 : connect(this.Character.Body.torso.TL1, this.Character.Body.torso.TL2),
-        TL2_TL3 : connect(this.Character.Body.torso.TL2, this.Character.Body.torso.TL3),
+        TL1_TL2 : this.connect(this.Character.Body.torso.TL1, this.Character.Body.torso.TL2),
+        TL2_TL3 : this.connect(this.Character.Body.torso.TL2, this.Character.Body.torso.TL3),
         //
-        TM1_TM2 : connect(this.Character.Body.torso.TM1, this.Character.Body.torso.TM2),
-        TM2_TM3 : connect(this.Character.Body.torso.TM2, this.Character.Body.torso.TM3),
+        TM1_TM2 : this.connect(this.Character.Body.torso.TM1, this.Character.Body.torso.TM2),
+        TM2_TM3 : this.connect(this.Character.Body.torso.TM2, this.Character.Body.torso.TM3),
         //
-        TR1_TR2 : connect(this.Character.Body.torso.TR1, this.Character.Body.torso.TR2),
-        TR2_TR3 : connect(this.Character.Body.torso.TR2, this.Character.Body.torso.TR3),
+        TR1_TR2 : this.connect(this.Character.Body.torso.TR1, this.Character.Body.torso.TR2),
+        TR2_TR3 : this.connect(this.Character.Body.torso.TR2, this.Character.Body.torso.TR3),
         //
-        TR3_TR2 : connect(this.Character.Body.torso.TR3, this.Character.Body.torso.TR2),
-        TR2_TR1 : connect(this.Character.Body.torso.TR2, this.Character.Body.torso.TR1),
+        TR3_TR2 : this.connect(this.Character.Body.torso.TR3, this.Character.Body.torso.TR2),
+        TR2_TR1 : this.connect(this.Character.Body.torso.TR2, this.Character.Body.torso.TR1),
         //\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|
         //\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|
         //\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|//\\|
-        TL1_TM2 : connect(this.Character.Body.torso.TL1, this.Character.Body.torso.TM2),
-        TR1_TR2 : connect(this.Character.Body.torso.TR1, this.Character.Body.torso.TM2),
+        TL1_TM2 : this.connect(this.Character.Body.torso.TL1, this.Character.Body.torso.TM2),
+        TR1_TR2 : this.connect(this.Character.Body.torso.TR1, this.Character.Body.torso.TM2),
         //
-        TL2_TM3 : connect(this.Character.Body.torso.TL2, this.Character.Body.torso.TM3),
-        TR2_TR3 : connect(this.Character.Body.torso.TR2, this.Character.Body.torso.TM3),
+        TL2_TM3 : this.connect(this.Character.Body.torso.TL2, this.Character.Body.torso.TM3),
+        TR2_TR3 : this.connect(this.Character.Body.torso.TR2, this.Character.Body.torso.TM3),
         //
-        TL3_TM2 : connect(this.Character.Body.torso.TL3, this.Character.Body.torso.TM2),
-        TR3_TM2 : connect(this.Character.Body.torso.TR3, this.Character.Body.torso.TM2),
+        TL3_TM2 : this.connect(this.Character.Body.torso.TL3, this.Character.Body.torso.TM2),
+        TR3_TM2 : this.connect(this.Character.Body.torso.TR3, this.Character.Body.torso.TM2),
         //
-        TR3_TM2 : connect(this.Character.Body.torso.TR3, this.Character.Body.torso.TM2),
-        TR2_TM1 : connect(this.Character.Body.torso.TR2, this.Character.Body.torso.TM1),
+        TR3_TM2 : this.connect(this.Character.Body.torso.TR3, this.Character.Body.torso.TM2),
+        TR2_TM1 : this.connect(this.Character.Body.torso.TR2, this.Character.Body.torso.TM1),
         //
-        TL3_TM2 : connect(this.Character.Body.torso.TL3, this.Character.Body.torso.TM2),
-        TL2_TM1 : connect(this.Character.Body.torso.TL2, this.Character.Body.torso.TM1),
+        TL3_TM2 : this.connect(this.Character.Body.torso.TL3, this.Character.Body.torso.TM2),
+        TL2_TM1 : this.connect(this.Character.Body.torso.TL2, this.Character.Body.torso.TM1),
       },
       left_arm_torso : {
-        L3_TL3 : connect(this.Character.Body.left_arm.L3, this.Character.Body.torso.TL3),
-        L3_TL2 : connect(this.Character.Body.left_arm.L3, this.Character.Body.torso.TL2),
+        L3_TL3 : this.connect(this.Character.Body.left_arm.L3, this.Character.Body.torso.TL3),
+        L3_TL2 : this.connect(this.Character.Body.left_arm.L3, this.Character.Body.torso.TL2),
       },
       right_arm_torso : {
-        R3_TR3 : connect(this.Character.Body.right_arm.R3, this.Character.Body.torso.TR3),
-        R3_TL2 : connect(this.Character.Body.right_arm.R3, this.Character.Body.torso.TR2),
+        R3_TR3 : this.connect(this.Character.Body.right_arm.R3, this.Character.Body.torso.TR3),
+        R3_TL2 : this.connect(this.Character.Body.right_arm.R3, this.Character.Body.torso.TR2),
       },
       left_arm : {
-        L3_L2 : connect(this.Character.Body.left_arm.L3, this.Character.Body.left_arm.L2),
-        L2_L1 : connect(this.Character.Body.left_arm.L2, this.Character.Body.left_arm.L1),
+        L3_L2 : this.connect(this.Character.Body.left_arm.L3, this.Character.Body.left_arm.L2),
+        L2_L1 : this.connect(this.Character.Body.left_arm.L2, this.Character.Body.left_arm.L1),
       },
       middle_leg : {
-        ML2_TM1 : connect(this.Character.Body.middle_leg.ML2, this.Character.Body.torso.TM1),
-        ML2_TL1 : connect(this.Character.Body.middle_leg.ML2, this.Character.Body.torso.TL1),
-        ML2_TR1 : connect(this.Character.Body.middle_leg.ML2, this.Character.Body.torso.TR1),
-        ML2_BR1 : connect(this.Character.Body.middle_leg.ML2, this.Character.Body.right_leg.BR1),
+        ML2_TM1 : this.connect(this.Character.Body.middle_leg.ML2, this.Character.Body.torso.TM1),
+        ML2_TL1 : this.connect(this.Character.Body.middle_leg.ML2, this.Character.Body.torso.TL1),
+        ML2_TR1 : this.connect(this.Character.Body.middle_leg.ML2, this.Character.Body.torso.TR1),
+        ML2_BR1 : this.connect(this.Character.Body.middle_leg.ML2, this.Character.Body.right_leg.BR1),
         //
-        ML2_BL1 : connect(this.Character.Body.middle_leg.ML2, this.Character.Body.left_leg.BL1),
-        ML2_BR2 : connect(this.Character.Body.middle_leg.ML2, this.Character.Body.right_leg.BR1),
+        ML2_BL1 : this.connect(this.Character.Body.middle_leg.ML2, this.Character.Body.left_leg.BL1),
+        ML2_BR2 : this.connect(this.Character.Body.middle_leg.ML2, this.Character.Body.right_leg.BR1),
         //
-        ML2_BL2 : connect(this.Character.Body.middle_leg.ML2, this.Character.Body.left_leg.BL2),
-        ML2_BR2 : connect(this.Character.Body.middle_leg.ML2, this.Character.Body.right_leg.BR2),
+        ML2_BL2 : this.connect(this.Character.Body.middle_leg.ML2, this.Character.Body.left_leg.BL2),
+        ML2_BR2 : this.connect(this.Character.Body.middle_leg.ML2, this.Character.Body.right_leg.BR2),
         //
-        BR1_ML1  : connect(this.Character.Body.right_leg.BR1, this.Character.Body.middle_leg.ML1),
-        BL1_ML1  : connect(this.Character.Body.left_leg.BL1, this.Character.Body.middle_leg.ML1),
+        BR1_ML1  : this.connect(this.Character.Body.right_leg.BR1, this.Character.Body.middle_leg.ML1),
+        BL1_ML1  : this.connect(this.Character.Body.left_leg.BL1, this.Character.Body.middle_leg.ML1),
         //
-        BL2_ML1  : connect(this.Character.Body.left_leg.BL2, this.Character.Body.middle_leg.ML1),
-        BR2_ML1  : connect(this.Character.Body.right_leg.BR2, this.Character.Body.middle_leg.ML1),
+        BL2_ML1  : this.connect(this.Character.Body.left_leg.BL2, this.Character.Body.middle_leg.ML1),
+        BR2_ML1  : this.connect(this.Character.Body.right_leg.BR2, this.Character.Body.middle_leg.ML1),
         //
-        ML1_ML2  : connect(this.Character.Body.middle_leg.ML1, this.Character.Body.middle_leg.ML2),
+        ML1_ML2  : this.connect(this.Character.Body.middle_leg.ML1, this.Character.Body.middle_leg.ML2),
       },
       right_arm : {
-        R3_R2 : connect(this.Character.Body.right_arm.R3, this.Character.Body.right_arm.R2),
-        R2_R1 : connect(this.Character.Body.right_arm.R2, this.Character.Body.right_arm.R1),
+        R3_R2 : this.connect(this.Character.Body.right_arm.R3, this.Character.Body.right_arm.R2),
+        R2_R1 : this.connect(this.Character.Body.right_arm.R2, this.Character.Body.right_arm.R1),
       },
       left_leg_torso : {
-        BL1_TR1 : connect(this.Character.Body.left_leg.BL1, this.Character.Body.torso.TR1),
-        BL1_TM2 : connect(this.Character.Body.left_leg.BL1, this.Character.Body.torso.TM1),
+        BL1_TR1 : this.connect(this.Character.Body.left_leg.BL1, this.Character.Body.torso.TR1),
+        BL1_TM2 : this.connect(this.Character.Body.left_leg.BL1, this.Character.Body.torso.TM1),
       },
       right_leg_torso : {
-        BR1_TL1 : connect(this.Character.Body.right_leg.BR1, this.Character.Body.torso.TL1),
-        BL1_TM2 : connect(this.Character.Body.right_leg.BR1, this.Character.Body.torso.TM1),
+        BR1_TL1 : this.connect(this.Character.Body.right_leg.BR1, this.Character.Body.torso.TL1),
+        BL1_TM2 : this.connect(this.Character.Body.right_leg.BR1, this.Character.Body.torso.TM1),
       },
       left_leg  : {
-        BL1_BL2 : connect(this.Character.Body.left_leg.BL1, this.Character.Body.left_leg.BL2),
+        BL1_BL2 : this.connect(this.Character.Body.left_leg.BL1, this.Character.Body.left_leg.BL2),
       },
       right_leg : {
-        BR1_BR2 : connect(this.Character.Body.right_leg.BR1, this.Character.Body.right_leg.BR2),
+        BR1_BR2 : this.connect(this.Character.Body.right_leg.BR1, this.Character.Body.right_leg.BR2),
       },
     }
 
@@ -301,6 +326,9 @@ class CharacterClass {
           case 'R1':
             image(Images.pistol_left, DATA.getPositionX() - (DATA.getHeight()/2+0.1), DATA.getPositionY()  - (DATA.getHeight()/2+0.1), DATA.getHeight(), DATA.getWidth());
             break;
+          case 'ML1':
+          case 'ML2':
+            break
           default:
             stroke('#212121');
             image(Images.black_square, DATA.getPositionX() - (DATA.getHeight()/2+0.1), DATA.getPositionY() - (DATA.getHeight()/2+0.1), DATA.getHeight(), DATA.getWidth());
@@ -364,14 +392,29 @@ function setup() {
   }
 
   Players = [
-    new CharacterClass({Matter : matter}).initCharacter().setKeys({
+    new CharacterClass({Matter : matter})
+    .setSpawn(500, 1000)
+    .initCharacter()
+    .setKeys({
       LEFT:        LEFT_ARROW,
       RIGHT:       RIGHT_ARROW,
       UP:          UP_ARROW,
       DOWN:        DOWN_ARROW,
       SHOOT_LEFT:  45,
       SHOOT_RIGHT: 17
-    }) // Create the characters here
+    }),
+
+    new CharacterClass({Matter : matter})
+    .setSpawn(200, 1000)
+    .initCharacter()
+    .setKeys({
+      LEFT:        90,
+      RIGHT:       90,
+      UP:          90,
+      DOWN:        90,
+      SHOOT_LEFT:  90,
+      SHOOT_RIGHT: 90
+    }),
   ]
 
   newMap = new Map({Matter: matter})
@@ -381,6 +424,7 @@ function setup() {
 function draw() {
   background(0);
   fill(127);
+
 
   newMap.createMap();
 
