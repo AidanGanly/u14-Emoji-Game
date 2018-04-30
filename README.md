@@ -18,7 +18,7 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | Implement keyboard controls | ✅ |
 | Implement shooting mechanics | ✅ |
 | Implement mechanics to allow the player to adjust the rotation of the character in case of it falling over | ✅ |
-| [CLASS: 3] Convert to classes, allowing the code to be expandable | ❌ - 2/3 |
+| [CLASS: 3] Convert to classes, allowing the code to be expandable | ✅ - 3/3 |
 | [CLASS: 1/3] Convert character to class | ✅ |
 | [CLASS: 2/3] Add keystroke listeners to class | ✅ |
 | [CLASS: 3/3] Add team colours to class | ✅ |
