@@ -125,7 +125,7 @@ class CharacterClass {
 
                 if (BPX_OPX > BPY_OPY){ BPX_ODF = BPX_OPX - BPY_OPY } else { BPX_ODF = BPY_OPY - BPX_OPX }
 
-                if (BPX_ODF > -5 && BPX_ODF < 5){
+                if ((BPX_ODF > -5 && BPX_ODF < 5) && (BPX_OPX < 100 && BPY_OPY < 100)){
                   DATA.body.force.x = -0.5
                   _this.RIGHT_X = 0
 
@@ -186,7 +186,7 @@ class CharacterClass {
 
                 if (BPX_OPX > BPY_OPY){ BPX_ODF = BPX_OPX - BPY_OPY } else { BPX_ODF = BPY_OPY - BPX_OPX }
 
-                if (BPX_ODF > -5 && BPX_ODF < 5){
+                if ((BPX_ODF > -5 && BPX_ODF < 5) && (BPX_OPX < 100 && BPY_OPY < 100)){
                   DATA.body.force.x = 0.5
                   _this.LEFT_X = 0
 
