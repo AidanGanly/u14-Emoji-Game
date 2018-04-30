@@ -58,6 +58,11 @@ class CharacterClass {
     return this
   }
 
+  setSymbol(image){
+    this.display_symbol = image
+    return this
+  }
+
   setID(ID){
     this.ID = ID
     return this
@@ -383,6 +388,7 @@ class CharacterClass {
   }
 
   createCharacter(){
+    let _this = this
     _.each(this.Character.Body, function(ARRAY){
       _.each(ARRAY, function(DATA, NAME){
         switch(NAME){
@@ -394,6 +400,9 @@ class CharacterClass {
             break;
           case 'R1':
             image(Images.pistol_left, DATA.getPositionX() - (DATA.getHeight()/2+0.1), DATA.getPositionY()  - (DATA.getHeight()/2+0.1), DATA.getHeight(), DATA.getWidth());
+            break;
+          case 'TM2':
+            image(_this.display_symbol, DATA.getPositionX() - (DATA.getHeight()/2+0.1), DATA.getPositionY() - (DATA.getHeight()/2+0.1), DATA.getHeight(), DATA.getWidth());
             break;
           case 'ML1':
           case 'ML2':
@@ -459,6 +468,9 @@ function setup() {
     respawn      : loadImage("images/respawn.png"),
     explode      : loadImage("images/explode.png"),
     point        : loadImage("images/point.png"),
+    P1           : loadImage("images/P1.png"),
+    P2           : loadImage("images/P2.png"),
+    P3           : loadImage("images/P3.png"),
   }
 
   Players = [
@@ -466,6 +478,7 @@ function setup() {
     .setSpawn(500, 1000)
     .initCharacter()
     .setID(0)
+    .setSymbol(Images.P1)
     .setKeys({
       LEFT:        LEFT_ARROW,
       RIGHT:       RIGHT_ARROW,
@@ -479,6 +492,7 @@ function setup() {
     .setSpawn(200, 1000)
     .initCharacter()
     .setID(1)
+    .setSymbol(Images.P2)
     .setKeys({
       LEFT:        65, // A
       RIGHT:       68, // D
@@ -501,10 +515,10 @@ function draw() {
   newMap.createMap();
 
   for (let Char in Players){
-    Players[Char].createCharacter().listenKeys()
+    Players[Char]
+    .createCharacter()
+    .listenKeys()
   }
 }
 
-onkeydown = function(e){
-  return ((e.ctrlKey) ? e.preventDefault() : '');
-}
+onkeydown = function(e){ return ((e.ctrlKey) ? e.preventDefault() : ''); }

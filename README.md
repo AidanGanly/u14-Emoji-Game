@@ -1,7 +1,7 @@
 # u14-Emoji-Game
 ### ⚠ Not finished
 
-Emoji based game for unit 14. 
+Emoji based game for unit 14.
 
 ```
 Game name; Emoji Panic
@@ -14,31 +14,31 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 #### Coding
 | Task | Completed/progress |
 | ------------- | --------- |
-| Create character with constraints, allowing it to support its self  | ✅ | 
+| Create character with constraints, allowing it to support its self  | ✅ |
 | Implement keyboard controls | ✅ |
 | Implement shooting mechanics | ✅ |
 | Implement mechanics to allow the player to adjust the rotation of the character in case of it falling over | ✅ |
 | [CLASS: 3] Convert to classes, allowing the code to be expandable | ❌ - 2/3 |
 | [CLASS: 1/3] Convert character to class | ✅ |
 | [CLASS: 2/3] Add keystroke listeners to class | ✅ |
-| [CLASS: 3/3] Add team colours to class | ❌ |
-| Implement lives | ❌ |
-| Add collison detection for rockets | ❌ |
-| Apply a positive force, relative to rocket speed to the part the rocket hits, thus causing the opposing player to catipult in the opposite direction and loose a life | ❌ |
+| [CLASS: 3/3] Add team colours to class | ✅ |
+| [DISBANDED] Implement lives | 🚧 |
+| Add collison detection for rockets | ✅ |
+| [LIVES HAVE NOT BEEN IMPLEMENTED. PLAYERS MUST SHOOT THE OPPOSING PLAYER OFF THE MAP] Apply a positive force, relative to rocket speed to the part the rocket hits, thus causing the opposing player to catipult in the opposite direction and loose a life | ✅ |
 | Create the map | ❌|
 
 
 #### Future ideas
 | Task | Completed/progress |
 | ------------- | --------- |
-| Add sound effects  | ❌ | 
+| Add sound effects  | ❌ |
 | Add cannons and other obstacles to the map  | ❌ |
 | Do away with lives and have the rockets, gradually destroy the player by deleting the surrounding blocks it collides with | ❌ |
 
 #### Testing
 | Task | Completed/progress |
 | ------------- | --------- |
-| Test with 3 players | ❌ | 
+| Test with 3 players | ❌ |
 
 #### Optimization
 
@@ -46,11 +46,11 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 
 | Task | Completed/progress |
 | ------------- | --------- |
-| Converting from procedual to class based, meaning the code is expandable. See revisions. | ✅ | 
-| Switch from `if` statements to `switch/case` statements, making the code more redable. See revisions. | ✅ | 
+| Converting from procedual to class based, meaning the code is expandable. See revisions. | ✅ |
+| Switch from `if` statements to `switch/case` statements, making the code more redable. See revisions. | ✅ |
 | Do away with redundent variables | ✅ |
-| Use ES6 modules with a seperate config.json file for settings, meaning the game mechanics can quickly be changed | ❌ | 
-| Minify code, do away with redundent CDNs like underscore - reducing load time | ❌ | 
+| Use ES6 modules with a seperate config.json file for settings, meaning the game mechanics can quickly be changed | ❌ |
+| Minify code, do away with redundent CDNs like underscore - reducing load time | ❌ |
 | Use ternary operators to increase code effeciency | ❌ |
 
 #### Update log
@@ -67,5 +67,4 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | Worked on bullet collision detection | 29 APR |
 | Finished bullet detection | 29 APR |
 | Added bullet collision explosion effects | 30 APR |
-
-
+| Added indication to the characters to represent which team the player was on | 30 APR |
