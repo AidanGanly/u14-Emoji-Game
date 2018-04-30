@@ -73,9 +73,11 @@ class CharacterClass {
     let _this = this
 
     if (_this.PlaceExplosion === true && _this.PlaceExplosionIteration < 20){
-      console.log(_this.ExplosionX, _this.ExplosionY)
-      image(Images.explode, _this.ExplosionX, _this.ExplosionY, 40, 40)
       _this.PlaceExplosionIteration ++;
+
+      for (let i=0; i<3; i++)
+      image(Images.explode, _this.ExplosionX + random(-2, 2), _this.ExplosionY + random(-2, 2), random(30, 70), random(30, 70))
+      image(Images.point, _this.ExplosionX + random(-2, 2), _this.ExplosionY  + random(-2, 2), random(30, 70), random(30, 70))
     } else {
       _this.PlaceExplosion = false;
       _this.PlaceExplosionIteration = 0
@@ -186,7 +188,6 @@ class CharacterClass {
                   _this.ExplosionX = OpposingX
                   _this.ExplosionY = OpposingY
                   _this.PlaceExplosion = true
-                  //image(Images.explode, OpposingX, OpposingY, 40, 40)
                 }
               }
             })
@@ -223,6 +224,7 @@ class CharacterClass {
       Connections : {}
     }
 
+    // All created using a small function I created in Lua
     this.Character.Body = {
       head : {
         __COLOUR: '#353b48',
@@ -439,7 +441,6 @@ class Map {
   }
 }
 
-
 function setup() {
   matter.mouseInteraction(
     createCanvas(
@@ -457,6 +458,7 @@ function setup() {
     titleImage   : loadImage("images/title.png"),
     respawn      : loadImage("images/respawn.png"),
     explode      : loadImage("images/explode.png"),
+    point        : loadImage("images/point.png"),
   }
 
   Players = [
@@ -501,4 +503,8 @@ function draw() {
   for (let Char in Players){
     Players[Char].createCharacter().listenKeys()
   }
+}
+
+onkeydown = function(e){
+  return ((e.ctrlKey) ? e.preventDefault() : '');
 }
