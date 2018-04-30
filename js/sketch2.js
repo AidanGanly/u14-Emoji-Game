@@ -10,13 +10,17 @@ class CharacterClass {
   constructor(ENV){
     this.ENV = ENV
 
-    this.LEFT_X       = 0
-    this.LEFT_REAL_X  = 0
+    this.LEFT_X         = 0
+    this.LEFT_REAL_X    = 0
 
-    this.RIGHT_X      = 0
-    this.RIGHT_REAL_X = 0
+    this.RIGHT_X        = 0
+    this.RIGHT_REAL_X   = 0
 
-    this.NumberRotateX = 0
+    this.NumberRotateX  = 0
+
+    this.PlaceExplosion = false
+    this.ExplosionX     = 0
+    this.ExplosionY     = 0
   }
 
   manipulateCharacter(DIR){
@@ -54,6 +58,11 @@ class CharacterClass {
     return this
   }
 
+  setID(ID){
+    this.ID = ID
+    return this
+  }
+
   connect(obj, obj2, stiffness){
     return this.ENV.Matter.connect(obj, obj2, {
       stiffness: (stiffness ? stiffness : 1.5),
@@ -62,6 +71,16 @@ class CharacterClass {
 
   listenKeys(){
     let _this = this
+
+    if (_this.PlaceExplosion === true && _this.PlaceExplosionIteration < 20){
+      console.log(_this.ExplosionX, _this.ExplosionY)
+      image(Images.explode, _this.ExplosionX, _this.ExplosionY, 40, 40)
+      _this.PlaceExplosionIteration ++;
+    } else {
+      _this.PlaceExplosion = false;
+      _this.PlaceExplosionIteration = 0
+    }
+
     if (keyIsDown(_this.KEYS.LEFT)) {
       _this.manipulateCharacter('LEFT')
     }
@@ -75,7 +94,6 @@ class CharacterClass {
       _this.manipulateCharacter('RESET')
     }
     if (keyIsDown(_this.KEYS.SHOOT_RIGHT)) {
-
       var STARTED_AT = _this.Character.Body.right_arm.R1.getPositionX()
       _this.RIGHT_X = _this.RIGHT_X - 30
       _this.RIGHT_REAL_X = _this.RIGHT_X;
@@ -85,58 +103,36 @@ class CharacterClass {
 
       image(Images.rocket_left, BulletPositionX, BulletPositionY, 40, 40);
 
-      //for (let Char in Players){
-      _.each(Players[1].CharacterBody.Body, function(ARRAY){
-        _.each(ARRAY, function(DATA, NAME){
-          if (NAME !== '__COLOUR'){
-            var OpposingX = DATA.body.position.x
-            var OpposingY = DATA.body.position.y
+      for (let Char in Players){
+        if (Char != _this.ID){
+          _.each(Players[Char].CharacterBody.Body, function(ARRAY){
+            _.each(ARRAY, function(DATA, NAME){
+              if (NAME !== '__COLOUR'){
+                var OpposingX = DATA.body.position.x
+                var OpposingY = DATA.body.position.y
 
-            var BulletPositionX     = ( _this.Character.Body.right_arm.R1.getPositionX() + _this.RIGHT_X )
-            var BulletPositionY     = ( (_this.Character.Body.right_arm.R1.getPositionY() - 10) + random(-15, -5) )
+                var BPX_OPX = Math.abs(Math.round(BulletPositionX) - Math.round(OpposingX))
+                var BPY_OPY = Math.abs(Math.round(BulletPositionY) - Math.round(OpposingY))
 
-            //console.log(NAME)
-            //console.log(Math.round(OpposingX),       Math.round(OpposingY))
-            //console.log(Math.round(BulletPositionX), Math.round(BulletPositionY))
-            var a = Math.abs(Math.round(BulletPositionX) - Math.round(OpposingX))
-            var b = Math.abs(Math.round(BulletPositionY) - Math.round(OpposingY))
+                var BPX_ODF
 
-            var c
+                if (BPX_OPX > BPY_OPY){ BPX_ODF = BPX_OPX - BPY_OPY } else { BPX_ODF = BPY_OPY - BPX_OPX }
 
-            if (a>b){
-              c = b-a
-            } else {
-              c = a-b
-            }
+                if (BPX_ODF > -5 && BPX_ODF < 5){
+                  DATA.body.force.x = -0.5
+                  _this.RIGHT_X = 0
 
-            if (c > -5 && c < 5){
-              console.log(DATA)
-            }
+                  _this.ExplosionX = OpposingX
+                  _this.ExplosionY = OpposingY
+                  _this.PlaceExplosion = true
 
-            //if (Math.round(OpposingX) == Math.round(BulletPositionX) ||	 Math.round(OpposingY) == Math.round(BulletPositionY)){
-            //  console.log(DATA)
-            //  DATA.body.force.x = -2
-            //}
-
-            //console.log(Math.round(OpposingY) == Math.round(BulletPositionY))
-            //console.log('------------')
-
-            //if ( ((Math.round(OpposingX) - Math.round(BulletPositionX)) < 10) && ((Math.round(OpposingY) - Math.round(BulletPositionY)) < 10) ){
-            //  console.log(NAME)
-            //}
-
-            //if (((OpposingX - BulletPositionX) < 20) || ((OpposingY - BulletPositionY) < 20)) {
-            //  console.log(NAME)
-            //}
-
-            //console.log(
-            //  (OpposingX - BulletPositionX),
-            //  (OpposingY - BulletPositionY)
-            //)
-          }
-        })
-      })
-      //}
+                  //image(Images.explode, OpposingX, OpposingY, 40, 40)
+                }
+              }
+            })
+          })
+        }
+      }
 
       if ((_this.RIGHT_REAL_X * -1/2) - (STARTED_AT/2)-61 > 0){
         _this.RIGHT_X = 0
@@ -158,11 +154,45 @@ class CharacterClass {
     }
 
     if (keyIsDown(_this.KEYS.SHOOT_LEFT)) {
-      image(Images.rocket_right, _this.Character.Body.left_arm.L1.getPositionX() + _this.LEFT_X, (_this.Character.Body.left_arm.L1.getPositionY() - 10) + random(-15, -5), 40, 40);
 
+      var STARTED_AT = _this.Character.Body.left_arm.L1.getPositionX()
       _this.LEFT_X = _this.LEFT_X + 30;
-
       _this.LEFT_REAL_X = 50 + _this.LEFT_X;
+
+      var BulletPositionX = ( _this.Character.Body.left_arm.L1.getPositionX() + _this.LEFT_X )
+      var BulletPositionY = ( (_this.Character.Body.left_arm.L1.getPositionY() - 10) + random(-15, -5) )
+
+      image(Images.rocket_right, BulletPositionX, BulletPositionY, 40, 40);
+
+      for (let Char in Players){
+        if (Char != _this.ID){
+          _.each(Players[Char].CharacterBody.Body, function(ARRAY){
+            _.each(ARRAY, function(DATA, NAME){
+              if (NAME !== '__COLOUR'){
+                var OpposingX = DATA.body.position.x
+                var OpposingY = DATA.body.position.y
+
+                var BPX_OPX = Math.abs(Math.round(BulletPositionX) - Math.round(OpposingX))
+                var BPY_OPY = Math.abs(Math.round(BulletPositionY) - Math.round(OpposingY))
+
+                var BPX_ODF
+
+                if (BPX_OPX > BPY_OPY){ BPX_ODF = BPX_OPX - BPY_OPY } else { BPX_ODF = BPY_OPY - BPX_OPX }
+
+                if (BPX_ODF > -5 && BPX_ODF < 5){
+                  DATA.body.force.x = 0.5
+                  _this.LEFT_X = 0
+
+                  _this.ExplosionX = OpposingX
+                  _this.ExplosionY = OpposingY
+                  _this.PlaceExplosion = true
+                  //image(Images.explode, OpposingX, OpposingY, 40, 40)
+                }
+              }
+            })
+          })
+        }
+      }
 
       if (_this.LEFT_REAL_X > width){
         _this.LEFT_X = 0
@@ -425,13 +455,15 @@ function setup() {
     rocket_left  : loadImage("images/rocket_left.png"),
     rocket_right : loadImage("images/rocket_right.png"),
     titleImage   : loadImage("images/title.png"),
-    respawn      : loadImage("images/respawn.png")
+    respawn      : loadImage("images/respawn.png"),
+    explode      : loadImage("images/explode.png"),
   }
 
   Players = [
     new CharacterClass({Matter : matter})
     .setSpawn(500, 1000)
     .initCharacter()
+    .setID(0)
     .setKeys({
       LEFT:        LEFT_ARROW,
       RIGHT:       RIGHT_ARROW,
@@ -444,13 +476,14 @@ function setup() {
     new CharacterClass({Matter : matter})
     .setSpawn(200, 1000)
     .initCharacter()
+    .setID(1)
     .setKeys({
-      LEFT:        90,
-      RIGHT:       90,
-      UP:          90,
-      DOWN:        90,
-      SHOOT_LEFT:  90,
-      SHOOT_RIGHT: 90
+      LEFT:        65, // A
+      RIGHT:       68, // D
+      UP:          87, // W
+      DOWN:        83, // S
+      SHOOT_LEFT:  70, // F
+      SHOOT_RIGHT: 20, // CAPS_LOCK
     }),
   ]
 
