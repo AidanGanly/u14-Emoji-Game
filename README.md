@@ -24,7 +24,7 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | [CLASS: 3/3] Add team colours to class | ✅ |
 | [DISBANDED] Implement lives | 🚧 |
 | Add collison detection for rockets | ✅ |
-| [LIVES HAVE NOT BEEN IMPLEMENTED. PLAYERS MUST SHOOT THE OPPOSING PLAYER OFF THE MAP] Apply a positive force, relative to rocket speed to the part the rocket hits, thus causing the opposing player to catipult in the opposite direction and loose a life | ✅ |
+| [LIVES HAVE NOT BEEN IMPLEMENTED. PLAYERS MUST SHOOT THE OPPOSING PLAYER OFF THE MAP] Apply a positive force, relative to rocket speed to the part the rocket hits. ~~thus causing the opposing player to catipult in the opposite direction and loose a life~~ | ✅ |
 | Create the map | ❌|
 
 
