@@ -34,6 +34,8 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | Add sound effects  | ❌ |
 | Add cannons and other obstacles to the map  | ❌ |
 | Do away with lives and have the rockets, gradually destroy the player by deleting the surrounding blocks it collides with | ❌ |
+| Rocket shooter cool down - x avaliable rockets in y seconds  | ❌ |
+
 
 #### Testing
 | Task | Completed/progress |
