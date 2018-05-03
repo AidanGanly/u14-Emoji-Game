@@ -73,3 +73,5 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | Finished bullet detection | 29 APR |
 | Added bullet collision explosion effects | 30 APR |
 | Added indication to the characters to represent which team the player was on | 30 APR |
+| Added expandable system, to place emojis where phyiscal instances should be | 1 MAY |
+| Downsized characters | 2 MAY |
