@@ -11,7 +11,7 @@ class CharacterClass {
    * Houses self contained data regarding each player
    *
    * @param   {Array} ENV   An array containing data that needs to be accessed from inside the character class
-   * @returns {Array}         Returns `this`, a reference to the housing class
+   * @returns {Array}       Returns `this`, a reference to the housing class
    */
   constructor(ENV){
     this.ENV = ENV
@@ -42,7 +42,7 @@ class CharacterClass {
      *  4) Rotate - counter clockwise
      *
      * @param   {String} DIR   The desired position - in capitals
-     * @returns {Array}           Returns `this`, a reference to the housing class
+     * @returns {Array}        Returns `this`, a reference to the housing class
      */
     var _this = this
     _.each(this.Character.Body, function(ARRAY){
@@ -75,7 +75,7 @@ class CharacterClass {
      * Binds the passed in dictionary containing the key code and the corrosponding action with an array
      *
      * @param   {Dictionary} DICT   A dictionary, in the order of; Left, Right, Up, Down, ShootLeft, ShootRight
-     * @returns {Array}                   Returns `this`, a reference to the housing class
+     * @returns {Array}             Returns `this`, a reference to the housing class
      */
     this.KEYS = DICT
     return this
@@ -124,7 +124,7 @@ class CharacterClass {
      * @param   {Array}   obj         The first physical object
      * @param   {Array}   obj2        The second physical object
      * @param   {Integer} stiffness   Stiffness represented as an integer
-     * @returns {Array}              Returns `this`, a reference to the housing class
+     * @returns {Array}               Returns `this`, a reference to the housing class
      */
     return this.ENV.Matter.connect(obj, obj2, {
       stiffness: (stiffness ? stiffness : 1.5),
@@ -135,7 +135,7 @@ class CharacterClass {
     /**
      * Listens for user key input
      *
-     * @returns {Array}              Returns `this`, a reference to the housing class
+     * @returns {Array}  Returns `this`, a reference to the housing class
      */
 
     let _this = this
@@ -288,7 +288,7 @@ class CharacterClass {
     /**
      * Initiates the character by building the necessary components
      *
-     * @returns {Array}              Returns `this`, a reference to the housing class
+     * @returns {Array}  Returns `this`, a reference to the housing class
      */
 
     var [x,y] = [this.x, this.y]
@@ -461,7 +461,7 @@ class CharacterClass {
     /**
      * Creates the given character, previously initiated with the initCharacter function
      *
-     * @returns {Array}              Returns `this`, a reference to the housing class
+     * @returns {Array}  Returns `this`, a reference to the housing class
      */
 
     let _this = this
@@ -497,7 +497,7 @@ class CharacterClass {
     /**
      * Returns the associated character
      *
-     * @returns {Array}              Returns `this.Character`, a reference to the associated character of the class
+     * @returns {Array}  Returns `this.Character`, a reference to the associated character of the class
      */
 
     return this.Character
@@ -535,7 +535,7 @@ class Map {
     /**
      * Creates the map, should be called from the draw function
      *
-     * @returns {Array}         Returns `this`, a reference to the housing class
+     * @returns {Array}  Returns `this`, a reference to the housing class
      */
     function create(data){
       _.each(data, function(DATA, ALIAS){
