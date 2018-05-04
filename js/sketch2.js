@@ -7,12 +7,6 @@ const SETTINGS = {
 }
 
 class CharacterClass {
-  /**
-   * Houses self contained data regarding each player
-   *
-   * @param   {Array} ENV   An array containing data that needs to be accessed from inside the character class
-   * @returns {Array}       Returns `this`, a reference to the housing class
-   */
   constructor(ENV){
     this.ENV = ENV
 
@@ -28,32 +22,24 @@ class CharacterClass {
     this.ExplosionX     = 0
     this.ExplosionY     = 0
 
-    this.jumpUp = 0
-
-    return this
+    this.size           = 20
   }
 
   manipulateCharacter(DIR){
-    /**
-     * Manipulates the given character in one of four ways;
-     *  1) Up
-     *  2) Left
-     *  3) Right
-     *  4) Rotate - counter clockwise
-     *
-     * @param   {String} DIR   The desired position - in capitals
-     * @returns {Array}        Returns `this`, a reference to the housing class
-     */
     var _this = this
     _.each(this.Character.Body, function(ARRAY){
       _.each(ARRAY, function(DATA, NAME){
         if (NAME !== '__COLOUR'){
           if (DIR === 'UP'){
-            if (NAME === 'L1' || NAME === 'R1'){
-              DATA.setPositionY(DATA.getPositionY() - 15)
-            } else {
-              DATA.setPositionY(DATA.getPositionY() - 10)
-            }
+            // if (NAME === 'L1' || NAME === 'R1'){
+            //   DATA.setPositionY(DATA.getPositionY() - 4)
+            // } else {
+            //   DATA.setPositionY(DATA.getPositionY() - 4)
+            // }
+            DATA.body.velocity.y = 100
+            DATA.body.mass = 0.1
+            DATA.setPositionY(DATA.getPositionY() - 6)
+            //DATA.addSpeed(.25, 90)
           } else if (DIR === 'LEFT'){
             DATA.setPositionX(DATA.getPositionX() - 5)
           } else if (DIR === 'RIGHT'){
@@ -61,91 +47,50 @@ class CharacterClass {
           } else if (DIR === 'RESET'){
             DATA.body.angle = _this.NumberRotateX
             _this.NumberRotateX = _this.NumberRotateX + 0.0015
-            image(Images.respawn, _this.Character.Body.torso.TM2.getPositionX() - 200, _this.Character.Body.torso.TM2.getPositionY() - 200, 400, 400);
+            image(Images.respawn, _this.Character.Body.torso.TM2.getPositionX() - 100/2, _this.Character.Body.torso.TM2.getPositionY() - 100/2, 200/2, 200/2);
           }
         }
       })
     })
-
-    return this
   }
 
   setKeys(DICT){
-    /**
-     * Binds the passed in dictionary containing the key code and the corrosponding action with an array
-     *
-     * @param   {Dictionary} DICT   A dictionary, in the order of; Left, Right, Up, Down, ShootLeft, ShootRight
-     * @returns {Array}             Returns `this`, a reference to the housing class
-     */
     this.KEYS = DICT
     return this
   }
 
   setSpawn(x,y){
-    /**
-     * Sets where the player should spawn
-     *
-     * @param   {Number} x   Relative x position
-     * @param   {Number} y   Relative y position
-     * @returns {Array}      Returns `this`, a reference to the housing class
-     */
     this.x = x; this.y = y;
     return this
   }
 
   setSymbol(image){
-    /**
-     * Sets the corrosponding image to the image the given player will represent in there torso
-     *
-     * @param   {Array} image   Passed in image, loaded via loadImage
-     * @returns {Array}         Returns `this`, a reference to the housing class
-     */
     this.display_symbol = image
     return this
   }
 
   setID(ID){
-    /**
-     * Sets a unique ID allocated to the given player
-     *
-     * @param   {Number} ID   A unique ID
-     * @returns {Array}       Returns `this`, a reference to the housing class
-     */
-    this.display_symbol = image
-    return this
     this.ID = ID
     return this
   }
 
   connect(obj, obj2, stiffness){
-    /**
-     * Creates a connection between two instances using constraints
-     *
-     * @param   {Array}   obj         The first physical object
-     * @param   {Array}   obj2        The second physical object
-     * @param   {Integer} stiffness   Stiffness represented as an integer
-     * @returns {Array}               Returns `this`, a reference to the housing class
-     */
     return this.ENV.Matter.connect(obj, obj2, {
       stiffness: (stiffness ? stiffness : 1.5),
     })
   }
 
   listenKeys(){
-    /**
-     * Listens for user key input
-     *
-     * @returns {Array}  Returns `this`, a reference to the housing class
-     */
-
     let _this = this
 
     if (_this.PlaceExplosion === true && _this.PlaceExplosionIteration < 20){
       _this.PlaceExplosionIteration ++;
 
-      for (let i=0; i<3; i++)
-      image(Images.explode, _this.ExplosionX + random(-2, 2), _this.ExplosionY + random(-2, 2), random(30, 70), random(30, 70))
-      image(Images.point, _this.ExplosionX + random(-2, 2), _this.ExplosionY  + random(-2, 2), random(30, 70), random(30, 70))
+      for (let i=0; i<3; i++) {
+        image(Images.explode, _this.ExplosionX + random(-2, 2), _this.ExplosionY + random(-2, 2), random(30, 70), random(30, 70))
+        image(Images.point, _this.ExplosionX + random(-2, 2), _this.ExplosionY  + random(-2, 2), random(30, 70), random(30, 70))
+      }
+
     } else {
       _this.PlaceExplosion = false;
       _this.PlaceExplosionIteration = 0
@@ -171,7 +116,7 @@ class CharacterClass {
       var BulletPositionX     = ( _this.Character.Body.right_arm.R1.getPositionX() + _this.RIGHT_X )
       var BulletPositionY     = ( (_this.Character.Body.right_arm.R1.getPositionY() - 10) + random(-15, -5) )
 
-      image(Images.rocket_left, BulletPositionX, BulletPositionY, 40, 40);
+      image(Images.rocket_left, BulletPositionX, BulletPositionY, this.size, this.size);
 
       for (let Char in Players){
         if (Char != _this.ID){
@@ -188,15 +133,16 @@ class CharacterClass {
 
                 if (BPX_OPX > BPY_OPY){ BPX_ODF = BPX_OPX - BPY_OPY } else { BPX_ODF = BPY_OPY - BPX_OPX }
 
-                if ((BPX_ODF > -5 && BPX_ODF < 5) && (BPX_OPX < 100 && BPY_OPY < 100)){
-                  DATA.body.force.x = -0.5
+                if ((BPX_ODF > -5 && BPX_ODF < 5) && (BPX_OPX < 30 && BPY_OPY < 30)){
+                  let Force = (Math.abs(_this.RIGHT_X, OpposingX)) / (1000)
+                  DATA.body.force.x = - 0.05
+
                   _this.RIGHT_X = 0
 
                   _this.ExplosionX = OpposingX
                   _this.ExplosionY = OpposingY
                   _this.PlaceExplosion = true
 
-                  //image(Images.explode, OpposingX, OpposingY, 40, 40)
                 }
               }
             })
@@ -232,7 +178,7 @@ class CharacterClass {
       var BulletPositionX = ( _this.Character.Body.left_arm.L1.getPositionX() + _this.LEFT_X )
       var BulletPositionY = ( (_this.Character.Body.left_arm.L1.getPositionY() - 10) + random(-15, -5) )
 
-      image(Images.rocket_right, BulletPositionX, BulletPositionY, 40, 40);
+      image(Images.rocket_right, BulletPositionX, BulletPositionY, this.size, this.size);
 
       for (let Char in Players){
         if (Char != _this.ID){
@@ -249,8 +195,10 @@ class CharacterClass {
 
                 if (BPX_OPX > BPY_OPY){ BPX_ODF = BPX_OPX - BPY_OPY } else { BPX_ODF = BPY_OPY - BPX_OPX }
 
-                if ((BPX_ODF > -5 && BPX_ODF < 5) && (BPX_OPX < 100 && BPY_OPY < 100)){
-                  DATA.body.force.x = 0.5
+                if ((BPX_ODF > -5 && BPX_ODF < 5) && (BPX_OPX < 30 && BPY_OPY < 30)){
+
+                  let Force = (Math.abs(_this.LEFT_REAL_X, OpposingX)) / (1000)
+                  DATA.body.force.x = 0.05
                   _this.LEFT_X = 0
 
                   _this.ExplosionX = OpposingX
@@ -285,12 +233,6 @@ class CharacterClass {
 
   initCharacter(){
 
-    /**
-     * Initiates the character by building the necessary components
-     *
-     * @returns {Array}  Returns `this`, a reference to the housing class
-     */
-
     var [x,y] = [this.x, this.y]
 
     this.Character = {
@@ -302,50 +244,50 @@ class CharacterClass {
     this.Character.Body = {
       head : {
         __COLOUR: '#353b48',
-        NK : this.ENV.Matter.makeBlock((x + (40 * 1) ), (y - (40 * 4)), 40, 40, {restitution: 1}),
-        HL : this.ENV.Matter.makeBlock((x + (40 * 0) ), (y - (40 * 5)), 40, 40, {restitution: 1}),
-        HM : this.ENV.Matter.makeBlock((x + (40 * 1) ), (y - (40 * 5)), 40, 40, {restitution: 1}),
-        HR : this.ENV.Matter.makeBlock((x + (40 * 2) ), (y - (40 * 5)), 40, 40, {restitution: 1}),
+        NK : this.ENV.Matter.makeBlock((x + (this.size * 1) ), (y - (this.size * 4)), this.size, this.size, {restitution: 1}),
+        HL : this.ENV.Matter.makeBlock((x + (this.size * 0) ), (y - (this.size * 5)), this.size, this.size, {restitution: 1}),
+        HM : this.ENV.Matter.makeBlock((x + (this.size * 1) ), (y - (this.size * 5)), this.size, this.size, {restitution: 1}),
+        HR : this.ENV.Matter.makeBlock((x + (this.size * 2) ), (y - (this.size * 5)), this.size, this.size, {restitution: 1}),
       },
       torso : {
-        __COLOUR: '#2f3640',
-        TL1 : this.ENV.Matter.makeBlock((x + (40 * 2) ), (y - (40 * 1)), 40, 40, {restitution: 1}),
-        TM1 : this.ENV.Matter.makeBlock((x + (40 * 1) ), (y - (40 * 1)), 40, 40, {restitution: 1}),
-        TR1 : this.ENV.Matter.makeBlock((x + (40 * 0) ), (y - (40 * 1)), 40, 40, {restitution: 1}),
+        __COLOUR: '#2f36this.size',
+        TL1 : this.ENV.Matter.makeBlock((x + (this.size * 2) ), (y - (this.size * 1)), this.size, this.size, {restitution: 1}),
+        TM1 : this.ENV.Matter.makeBlock((x + (this.size * 1) ), (y - (this.size * 1)), this.size, this.size, {restitution: 1}),
+        TR1 : this.ENV.Matter.makeBlock((x + (this.size * 0) ), (y - (this.size * 1)), this.size, this.size, {restitution: 1}),
         //
-        TL2 : this.ENV.Matter.makeBlock((x + (40 * 2) ), (y - (40 * 2)), 40, 40, {restitution: 1}),
-        TM2 : this.ENV.Matter.makeBlock((x + (40 * 1) ), (y - (40 * 2)), 40, 40, {restitution: 1}),
-        TR2 : this.ENV.Matter.makeBlock((x + (40 * 0) ), (y - (40 * 2)), 40, 40, {restitution: 1}),
+        TL2 : this.ENV.Matter.makeBlock((x + (this.size * 2) ), (y - (this.size * 2)), this.size, this.size, {restitution: 1}),
+        TM2 : this.ENV.Matter.makeBlock((x + (this.size * 1) ), (y - (this.size * 2)), this.size, this.size, {restitution: 1}),
+        TR2 : this.ENV.Matter.makeBlock((x + (this.size * 0) ), (y - (this.size * 2)), this.size, this.size, {restitution: 1}),
         //
-        TL3 : this.ENV.Matter.makeBlock((x + (40 * 2) ), (y - (40 * 3)), 40, 40, {restitution: 1}),
-        TM3 : this.ENV.Matter.makeBlock((x + (40 * 1) ), (y - (40 * 3)), 40, 40, {restitution: 1}),
-        TR3 : this.ENV.Matter.makeBlock((x + (40 * 0) ), (y - (40 * 3)), 40, 40, {restitution: 1}),
+        TL3 : this.ENV.Matter.makeBlock((x + (this.size * 2) ), (y - (this.size * 3)), this.size, this.size, {restitution: 1}),
+        TM3 : this.ENV.Matter.makeBlock((x + (this.size * 1) ), (y - (this.size * 3)), this.size, this.size, {restitution: 1}),
+        TR3 : this.ENV.Matter.makeBlock((x + (this.size * 0) ), (y - (this.size * 3)), this.size, this.size, {restitution: 1}),
       },
       left_arm : {
         __COLOUR: '#7f8fa6',
-        L1 : this.ENV.Matter.makeBlock((x + (40 * 3) ), (y - (40 * 1)), 40, 40, {restitution: 1}),
-        L2 : this.ENV.Matter.makeBlock((x + (40 * 3) ), (y - (40 * 2)), 40, 40, {restitution: 1}),
-        L3 : this.ENV.Matter.makeBlock((x + (40 * 3) ), (y - (40 * 3)), 40, 40, {restitution: 1}),
+        L1 : this.ENV.Matter.makeBlock((x + (this.size * 3) ), (y - (this.size * 1)), this.size, this.size, {restitution: 1}),
+        L2 : this.ENV.Matter.makeBlock((x + (this.size * 3) ), (y - (this.size * 2)), this.size, this.size, {restitution: 1}),
+        L3 : this.ENV.Matter.makeBlock((x + (this.size * 3) ), (y - (this.size * 3)), this.size, this.size, {restitution: 1}),
       },
       middle_leg : {
-        ML2 : this.ENV.Matter.makeBlock((x + (40 * 1) ), (y - (40 * 0)), 40, 40, {restitution: 1}),
-        ML1 : this.ENV.Matter.makeBlock((x + (40 * 1) ), (y - (40 * -1)), 40, 40, {restitution: 1}),
+        ML2 : this.ENV.Matter.makeBlock((x + (this.size * 1) ), (y - (this.size * 0)), this.size, this.size, {restitution: 1}),
+        ML1 : this.ENV.Matter.makeBlock((x + (this.size * 1) ), (y - (this.size * -1)), this.size, this.size, {restitution: 1}),
       },
       right_arm : {
         __COLOUR: '#7f8fa6',
-        R1 : this.ENV.Matter.makeBlock((x + (40 * -1) ), (y - (40 * 1)), 40, 40, {restitution: 1}),
-        R2 : this.ENV.Matter.makeBlock((x + (40 * -1) ), (y - (40 * 2)), 40, 40, {restitution: 1}),
-        R3 : this.ENV.Matter.makeBlock((x + (40 * -1) ), (y - (40 * 3)), 40, 40, {restitution: 1}),
+        R1 : this.ENV.Matter.makeBlock((x + (this.size * -1) ), (y - (this.size * 1)), this.size, this.size, {restitution: 1}),
+        R2 : this.ENV.Matter.makeBlock((x + (this.size * -1) ), (y - (this.size * 2)), this.size, this.size, {restitution: 1}),
+        R3 : this.ENV.Matter.makeBlock((x + (this.size * -1) ), (y - (this.size * 3)), this.size, this.size, {restitution: 1}),
       },
       left_leg  : {
         __COLOUR: '#718093',
-        BL1 : this.ENV.Matter.makeBlock(x, y,        40, 40, {restitution: 1.2}),
-        BL2 : this.ENV.Matter.makeBlock(x, (y + 40), 40, 40, {restitution: 1.2}),
+        BL1 : this.ENV.Matter.makeBlock(x, y,        this.size, this.size, {restitution: 1.2}),
+        BL2 : this.ENV.Matter.makeBlock(x, (y + this.size), this.size, this.size, {restitution: 1.2}),
       },
       right_leg : {
         __COLOUR: '#718093',
-        BR1 : this.ENV.Matter.makeBlock((x + (40 * 2) ), y,        40, 40, {restitution: 1.2}),
-        BR2 : this.ENV.Matter.makeBlock((x + (40 * 2) ), (y + 40), 40, 40, {restitution: 1.2}),
+        BR1 : this.ENV.Matter.makeBlock((x + (this.size * 2) ), y,        this.size, this.size, {restitution: 1.2}),
+        BR2 : this.ENV.Matter.makeBlock((x + (this.size * 2) ), (y + this.size), this.size, this.size, {restitution: 1.2}),
       }
     },
     this.Character.Connections = {
@@ -457,13 +399,6 @@ class CharacterClass {
   }
 
   createCharacter(){
-
-    /**
-     * Creates the given character, previously initiated with the initCharacter function
-     *
-     * @returns {Array}  Returns `this`, a reference to the housing class
-     */
-
     let _this = this
     _.each(this.Character.Body, function(ARRAY){
       _.each(ARRAY, function(DATA, NAME){
@@ -494,55 +429,40 @@ class CharacterClass {
   }
 
   get CharacterBody(){
-    /**
-     * Returns the associated character
-     *
-     * @returns {Array}  Returns `this.Character`, a reference to the associated character of the class
-     */
-
     return this.Character
   }
 }
 
 class Map {
-  /**
-   * Houses self contained data regarding the map
-   *
-   * @param   {Array} ENV     An array containing data that needs to be accessed from inside the character class
-   * @returns {Array}         Returns `this`, a reference to the housing class
-   */
   constructor(ENV){
     this.ENV = ENV
   }
   initMap(){
-    /**
-     * Initiates the map
-     *
-     * @returns {Array}         Returns `this`, a reference to the housing class
-     */
     this.scene = {
-      floor   : matter.makeBarrier(width / 2, height, width, 50),
+      floor : [
+        Images.fire,
+        matter.makeBarrier(width / 2, height, width, 40)
+      ],
       __layers : {
         __first : {
-          F1 : matter.makeBarrier(0, 1500, width / 5, 90),
-          F2 : matter.makeBarrier(width / 5, 1500, width / 5.5, 90),
+          upper_floor : [
+            Images.chain,
+            matter.makeBarrier((width/2), 600, width/1.25, 40)
+          ]
         }
       }
     }
-    return this
   }
   createMap(){
-    /**
-     * Creates the map, should be called from the draw function
-     *
-     * @returns {Array}  Returns `this`, a reference to the housing class
-     */
     function create(data){
       _.each(data, function(DATA, ALIAS){
         if (ALIAS.indexOf('__') === 0){
           create(DATA)
         } else {
-          DATA.show();
+          for (var i=0; i < DATA[1].width; i+=40){
+            image(DATA[0], (DATA[1].getPositionX() - 765) + i, DATA[1].getPositionY() - 30, 40, 40);
+          }
+          //DATA[1].show();
         }
       })
     }; create(this.scene);
@@ -552,8 +472,8 @@ class Map {
 function setup() {
   matter.mouseInteraction(
     createCanvas(
-      window.innerWidth - 40,
-      window.innerHeight - 40
+      1536 - 40,
+      759  - 20
      )
   );
 
@@ -567,6 +487,7 @@ function setup() {
     respawn      : loadImage("images/respawn.png"),
     explode      : loadImage("images/explode.png"),
     point        : loadImage("images/point.png"),
+    fire         : loadImage("images/fire.png"),
     P1           : loadImage("images/P1.png"),
     P2           : loadImage("images/P2.png"),
     P3           : loadImage("images/P3.png"),
@@ -574,7 +495,7 @@ function setup() {
 
   Players = [
     new CharacterClass({Matter : matter})
-    .setSpawn(500, 1000)
+    .setSpawn(500, 675)
     .initCharacter()
     .setID(0)
     .setSymbol(Images.P1)
@@ -588,7 +509,7 @@ function setup() {
     }),
 
     new CharacterClass({Matter : matter})
-    .setSpawn(200, 1000)
+    .setSpawn(400, 675)
     .initCharacter()
     .setID(1)
     .setSymbol(Images.P2)
@@ -607,9 +528,9 @@ function setup() {
 }
 
 function draw() {
+  matter.changeGravity(0, 0.7)
   background(0);
   fill(127);
-
 
   newMap.createMap();
 
