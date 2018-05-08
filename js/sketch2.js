@@ -135,7 +135,7 @@ class CharacterClass {
 
                 if ((BPX_ODF > -5 && BPX_ODF < 5) && (BPX_OPX < 30 && BPY_OPY < 30)){
                   let Force = (Math.abs(_this.RIGHT_X, OpposingX)) / (1000)
-                  DATA.body.force.x = - 0.05
+                  DATA.body.force.x = - 0.015
 
                   _this.RIGHT_X = 0
 
@@ -198,7 +198,7 @@ class CharacterClass {
                 if ((BPX_ODF > -5 && BPX_ODF < 5) && (BPX_OPX < 30 && BPY_OPY < 30)){
 
                   let Force = (Math.abs(_this.LEFT_REAL_X, OpposingX)) / (1000)
-                  DATA.body.force.x = 0.05
+                  DATA.body.force.x = 0.015
                   _this.LEFT_X = 0
 
                   _this.ExplosionX = OpposingX
@@ -441,14 +441,22 @@ class Map {
     this.scene = {
       floor : [
         Images.fire,
-        matter.makeBarrier(width / 2, height, width, 40)
+        //matter.makeBarrier(width / 2, height, width, 40),
+        { // Creates custom class that mimicks barriers
+          width : width,
+          getPositionX: function(){ return width/2 },
+          getPositionY: function(){ return height },
+          show: function(){},
+        },
+        30
       ],
       __layers : {
-        __first : {
-          upper_floor : [
+        __floors : {
+          upper_floor1 : [
             Images.chain,
-            matter.makeBarrier((width/2), 600, width/1.25, 40)
-          ]
+            matter.makeBarrier((width/2), 600, width/1.15, 40),
+            20
+          ],
         }
       }
     }
@@ -460,7 +468,7 @@ class Map {
           create(DATA)
         } else {
           for (var i=0; i < DATA[1].width; i+=40){
-            image(DATA[0], (DATA[1].getPositionX() - 765) + i, DATA[1].getPositionY() - 30, 40, 40);
+            image(DATA[0], ( (DATA[1].getPositionX() - (DATA[1].width/2)) ) + i, DATA[1].getPositionY() - DATA[2], 40, 40);
           }
           //DATA[1].show();
         }
@@ -483,36 +491,22 @@ function setup() {
     pistol_right : loadImage("images/pistol_right.png"),
     rocket_left  : loadImage("images/rocket_left.png"),
     rocket_right : loadImage("images/rocket_right.png"),
-    titleImage   : loadImage("images/title.png"),
     respawn      : loadImage("images/respawn.png"),
     explode      : loadImage("images/explode.png"),
+    chain        : loadImage("images/chain.png"),
     point        : loadImage("images/point.png"),
     fire         : loadImage("images/fire.png"),
     P1           : loadImage("images/P1.png"),
     P2           : loadImage("images/P2.png"),
-    P3           : loadImage("images/P3.png"),
+    P3           : loadImage("images/P3.png")
   }
 
   Players = [
     new CharacterClass({Matter : matter})
-    .setSpawn(500, 675)
+    .setSpawn(130, 550)
     .initCharacter()
     .setID(0)
     .setSymbol(Images.P1)
-    .setKeys({
-      LEFT:        LEFT_ARROW,
-      RIGHT:       RIGHT_ARROW,
-      UP:          UP_ARROW,
-      DOWN:        DOWN_ARROW,
-      SHOOT_LEFT:  45,
-      SHOOT_RIGHT: 17
-    }),
-
-    new CharacterClass({Matter : matter})
-    .setSpawn(400, 675)
-    .initCharacter()
-    .setID(1)
-    .setSymbol(Images.P2)
     .setKeys({
       LEFT:        65, // A
       RIGHT:       68, // D
@@ -520,6 +514,34 @@ function setup() {
       DOWN:        83, // S
       SHOOT_LEFT:  70, // F
       SHOOT_RIGHT: 20, // CAPS_LOCK
+    }),
+
+    new CharacterClass({Matter : matter})
+    .setSpawn(750, 550)
+    .initCharacter()
+    .setID(1)
+    .setSymbol(Images.P2)
+    .setKeys({
+      LEFT:        74,  // J
+      RIGHT:       76,  // L
+      UP:          73,  // I
+      DOWN:        75,  // K
+      SHOOT_LEFT:  72,  // H
+      SHOOT_RIGHT: 186, // ;
+    }),
+
+    new CharacterClass({Matter : matter})
+    .setSpawn(1350, 550)
+    .initCharacter()
+    .setID(2)
+    .setSymbol(Images.P3)
+    .setKeys({
+      LEFT:        LEFT_ARROW,
+      RIGHT:       RIGHT_ARROW,
+      UP:          UP_ARROW,
+      DOWN:        DOWN_ARROW,
+      SHOOT_LEFT:  45,
+      SHOOT_RIGHT: 17
     }),
   ]
 
