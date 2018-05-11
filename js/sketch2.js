@@ -448,14 +448,33 @@ class Map {
           getPositionY: function(){ return height },
           show: function(){},
         },
-        30
+        30,
+        ['STATIC']
       ],
       __layers : {
         __floors : {
           upper_floor1 : [
             Images.chain,
             matter.makeBarrier((width/2), 600, width/1.15, 40),
-            20
+            20,
+            ['STATIC']
+          ],
+          upper_floor2 : [
+            Images.chain,
+            //matter.makeBarrier(50, 500, width/1.15, 40),
+            { // Creates custom class that mimicks barriers
+              width : width/1.15,
+              getPositionX: function(){ return width/2 },
+              getPositionY: function(){ return 400 },
+              show: function(){},
+            },
+            20,
+            {
+              x: ['STATIC'],
+              y: [200, 300, 200], //from, to, start
+              current: 'MOVE_UP', // It's at 200, so move up to 300
+              speed: 0.01 // speed at which things move
+            }
           ],
         }
       }
@@ -468,7 +487,50 @@ class Map {
           create(DATA)
         } else {
           for (var i=0; i < DATA[1].width; i+=40){
-            image(DATA[0], ( (DATA[1].getPositionX() - (DATA[1].width/2)) ) + i, DATA[1].getPositionY() - DATA[2], 40, 40);
+
+            if (DATA[3] != "STATIC"){
+              var x = DATA[3].x
+              var y = DATA[3].y
+
+              if (x[0] !== "STATIC"){
+                if ( (DATA[3].current === "MOVE_UP")){
+                  if (x[2] < x[1]){
+                    x[2]+=DATA[3].speed || 0.1;
+                  } else {
+                    DATA[3].current = "MOVE_DOWN"
+                  }
+                }
+
+                if ( (DATA[3].current === "MOVE_DOWN")){
+                  if (x[2] > x[0]){
+                    x[2]-=DATA[3].speed || 0.1;
+                  } else {
+                    DATA[3].current = "MOVE_UP"
+                  }
+                }
+              }
+              if (y[0] !== "STATIC"){
+
+                if ( (DATA[3].current === "MOVE_UP")){
+                  if (y[2] < y[1]){
+                    y[2]+=DATA[3].speed || 0.1;
+                  } else {
+                    DATA[3].current = "MOVE_DOWN"
+                  }
+                }
+
+                if ( (DATA[3].current === "MOVE_DOWN")){
+                  if (y[2] > y[0]){
+                    y[2]-=DATA[3].speed || 0.1;
+                  } else {
+                    DATA[3].current = "MOVE_UP"
+                  }
+                }
+              }
+              image(DATA[0], ( (DATA[1].getPositionX() - ((DATA[1].width/2)) ) + i) + y[2] || 0, ( (DATA[1].getPositionY()) - DATA[2]), 40, 40);
+            } else {
+              image(DATA[0], ( (DATA[1].getPositionX() - (DATA[1].width/2)) ) + i, DATA[1].getPositionY() - DATA[2], 40, 40);
+            }
           }
           //DATA[1].show();
         }
