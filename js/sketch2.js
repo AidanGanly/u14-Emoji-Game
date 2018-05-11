@@ -448,14 +448,26 @@ class Map {
           getPositionY: function(){ return height },
           show: function(){},
         },
-        30
+        30,
+        ['STATIC']
       ],
       __layers : {
         __floors : {
           upper_floor1 : [
             Images.chain,
             matter.makeBarrier((width/2), 600, width/1.15, 40),
-            20
+            20,
+            ['STATIC']
+          ],
+          upper_floor2 : [
+            Images.chain,
+            matter.makeBarrier(90, 300, width/1.15, 40),
+            20,
+            {
+              x: ['STATIC'],
+              y: [200, 300, 0],
+              current: 'NONE'
+            }
           ],
         }
       }
@@ -468,7 +480,35 @@ class Map {
           create(DATA)
         } else {
           for (var i=0; i < DATA[1].width; i+=40){
-            image(DATA[0], ( (DATA[1].getPositionX() - (DATA[1].width/2)) ) + i, DATA[1].getPositionY() - DATA[2], 40, 40);
+
+            if (DATA[3] != "STATIC"){
+              var x = DATA[3].x
+              var y = DATA[3].y
+
+              if (x[0] !== "STATIC"){
+                //console.log(x[0], x[1], x[2])
+              }
+              if (y[0] !== "STATIC"){
+                //console.log(y[0], y[1], y[2])
+                if (y[0] < y[1]){
+                  y[2] ++
+                  DATA[3].current = "MOVE_UP"
+                } else {
+                  y[2] --
+                }
+
+                if (DATA[3].current == "MOVE_UP" && y[2] > y[1]){
+                  DATA[3].current = "MOVE_DOWN"
+                  y[2]--;
+                } else if (DATA[3].current == "MOVE_DOWN" && y[2] < y[0])  {
+                  DATA[3].current = "MOVE_UP"
+                  y[2]++;
+                }
+
+              }
+            } else {
+              image(DATA[0], ( (DATA[1].getPositionX() - (DATA[1].width/2)) ) + i, DATA[1].getPositionY() - DATA[2], 40, 40);
+            }
           }
           //DATA[1].show();
         }
