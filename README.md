@@ -25,7 +25,7 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | [DISBANDED] Implement lives | 🚧 |
 | Add collison detection for rockets | ✅ |
 | [LIVES HAVE NOT BEEN IMPLEMENTED. PLAYERS MUST SHOOT THE OPPOSING PLAYER OFF THE MAP] Apply a positive force, relative to rocket speed to the part the rocket hits. ~~thus causing the opposing player to catipult in the opposite direction and loose a life~~ | ✅ |
-| Create the map | ❌ |
+| Create the map | ✅ |
 | Create win/loose conditions | ❌ |
 | Create main menu | ❌ |
 
@@ -75,3 +75,4 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | Added indication to the characters to represent which team the player was on | 30 APR |
 | Added expandable system, to place emojis where phyiscal instances should be | 1 MAY |
 | Downsized characters by half | 2 MAY |
+| Added functionality to have the barriers move | 12 MAY |

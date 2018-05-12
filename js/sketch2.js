@@ -455,21 +455,59 @@ class Map {
         __floors : {
           upper_floor1 : [
             Images.chain,
-            matter.makeBarrier((width/2), 600, width/1.15, 40),
+            matter.makeBarrier((width/2), 600 + 60, width/1.32, 40),
             20,
             ['STATIC']
           ],
           upper_floor2 : [
             Images.chain,
-            matter.makeBarrier(50, 400, width/2.5, 40),
+            matter.makeBarrier(20, 600 + 60, 300, 40),
             20,
             {
-              x: [100, 500, 100],
+              x: [-50, 200, 200],
               y: ['STATIC'], //from, to, start
               current: 'MOVE_UP', // It's at 200, so move up to 300
               speed: 0.1, // speed at which things move
-              cache: {x: 50, y: 400},
-              offset: 300
+              cache: {x: 20, y: 400 + 60}, // initial x,y
+              offset: 300 // unused
+            }
+          ],
+          upper_floor3 : [
+            Images.chain,
+            matter.makeBarrier(335, 340 + 60, 300, 40),
+            20,
+            ['STATIC']
+          ],
+          upper_floor4 : [
+            Images.chain,
+            matter.makeBarrier(660, 340 + 60, 600, 40),
+            20,
+            {
+              x: ['STATIC'],
+              y: [0, 200, 0], //from, to, start
+              current: 'MOVE_UP', // It's at 200, so move up to 300
+              speed: 0.1, // speed at which things move
+              cache: {x: 800, y: 340 + 60}, // initial x,y
+              offset: 300 // unused
+            }
+          ],
+          upper_floor5 : [
+            Images.chain,
+            matter.makeBarrier(730, 130 + 60, 1100, 40),
+            20,
+            ['STATIC']
+          ],
+          upper_floor6 : [
+            Images.chain,
+            matter.makeBarrier(1400, 360 + 60, 200, 40),
+            20,
+            {
+              x: [0, 220, 200],
+              y: ['STATIC'], //from, to, start
+              current: 'MOVE_UP', // It's at 200, so move up to 300
+              speed: 0.3, // speed at which things move
+              cache: {x: 1400, y: 140 + 60}, // initial x,y
+              offset: 300 // unused
             }
           ],
         }
@@ -569,7 +607,7 @@ function setup() {
 
   Players = [
     new CharacterClass({Matter : matter})
-    .setSpawn(130, 550)
+    .setSpawn(380, 308)
     .initCharacter()
     .setID(0)
     .setSymbol(Images.P1)
@@ -583,7 +621,7 @@ function setup() {
     }),
 
     new CharacterClass({Matter : matter})
-    .setSpawn(750, 550)
+    .setSpawn(690, 70)
     .initCharacter()
     .setID(1)
     .setSymbol(Images.P2)
@@ -597,7 +635,7 @@ function setup() {
     }),
 
     new CharacterClass({Matter : matter})
-    .setSpawn(1350, 550)
+    .setSpawn(1206, 620)
     .initCharacter()
     .setID(2)
     .setSymbol(Images.P3)
