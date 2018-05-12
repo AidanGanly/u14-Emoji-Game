@@ -461,19 +461,15 @@ class Map {
           ],
           upper_floor2 : [
             Images.chain,
-            //matter.makeBarrier(50, 500, width/1.15, 40),
-            { // Creates custom class that mimicks barriers
-              width : width/1.15,
-              getPositionX: function(){ return width/2 },
-              getPositionY: function(){ return 400 },
-              show: function(){},
-            },
+            matter.makeBarrier(50, 400, width/2.5, 40),
             20,
             {
               x: ['STATIC'],
-              y: [200, 300, 200], //from, to, start
+              y: [100, 500, 100], //from, to, start
               current: 'MOVE_UP', // It's at 200, so move up to 300
-              speed: 0.01 // speed at which things move
+              speed: 0.1, // speed at which things move
+              cache: {x: 50, y: 400},
+              offset: 300
             }
           ],
         }
@@ -527,12 +523,20 @@ class Map {
                   }
                 }
               }
-              image(DATA[0], ( (DATA[1].getPositionX() - ((DATA[1].width/2)) ) + i) + y[2] || 0, ( (DATA[1].getPositionY()) - DATA[2]), 40, 40);
+
+              if (x[0] !== "STATIC"){
+                image(DATA[0], ( (DATA[1].getPositionX() - ((DATA[1].width/2)) ) + i), ( (DATA[1].getPositionY() + x[2]) - DATA[2]), 40, 40);
+                DATA[1].setPositionY( DATA[3].cache.y + x[2] )
+              } else if (y[0] !== "STATIC"){
+                DATA[1].setPositionX( DATA[3].cache.x + y[2] )
+                image(DATA[0], (DATA[3].cache.x + y[2] + i) - DATA[3].offset, ( (DATA[1].getPositionY()) - DATA[2]), 40, 40);
+              }
+
             } else {
               image(DATA[0], ( (DATA[1].getPositionX() - (DATA[1].width/2)) ) + i, DATA[1].getPositionY() - DATA[2], 40, 40);
             }
           }
-          //DATA[1].show();
+          DATA[1].show();
         }
       })
     }; create(this.scene);
