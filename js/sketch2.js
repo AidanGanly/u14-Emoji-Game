@@ -464,8 +464,8 @@ class Map {
             matter.makeBarrier(50, 400, width/2.5, 40),
             20,
             {
-              x: ['STATIC'],
-              y: [100, 500, 100], //from, to, start
+              x: [100, 500, 100],
+              y: ['STATIC'], //from, to, start
               current: 'MOVE_UP', // It's at 200, so move up to 300
               speed: 0.1, // speed at which things move
               cache: {x: 50, y: 400},
@@ -525,8 +525,8 @@ class Map {
               }
 
               if (x[0] !== "STATIC"){
-                image(DATA[0], ( (DATA[1].getPositionX() - ((DATA[1].width/2)) ) + i), ( (DATA[1].getPositionY() + x[2]) - DATA[2]), 40, 40);
                 DATA[1].setPositionY( DATA[3].cache.y + x[2] )
+                image(DATA[0], ( (DATA[1].getPositionX() - ((DATA[1].width/2)) ) + i), (DATA[3].cache.y + x[2]) - 30, 40, 40);
               } else if (y[0] !== "STATIC"){
                 DATA[1].setPositionX( DATA[3].cache.x + y[2] )
                 image(DATA[0], (DATA[3].cache.x + y[2] + i) - DATA[3].offset, ( (DATA[1].getPositionY()) - DATA[2]), 40, 40);
@@ -536,7 +536,7 @@ class Map {
               image(DATA[0], ( (DATA[1].getPositionX() - (DATA[1].width/2)) ) + i, DATA[1].getPositionY() - DATA[2], 40, 40);
             }
           }
-          DATA[1].show();
+          //DATA[1].show();
         }
       })
     }; create(this.scene);
