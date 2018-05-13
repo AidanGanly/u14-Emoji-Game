@@ -4,7 +4,7 @@
 Emoji based game for unit 14.
 
 ```
-Game name; Emoji Panic
+Game name; Shooter Game
 Objective; Last man standing
 Type of fun;  Competiveness, winning, killing
 
