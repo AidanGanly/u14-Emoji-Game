@@ -499,7 +499,8 @@ class CharacterClass {
         _this.HasLengthMovement = false
       }
 
-      image(Players[REMAINING].symbol, width/2, height/2 - _this.changeHeight, 100, 100)
+
+      image(Players[REMAINING[0]].symbol, width/2, height/2 - _this.changeHeight, 100, 100)
 
       image(Images.crown, width/2 + 100, height/2 - _this.changeHeight, 100, 100)
       image(Images.crown, width/2 - 100, height/2 - _this.changeHeight, 100, 100)
@@ -512,7 +513,7 @@ class CharacterClass {
 
       //
 
-      image(Images.crown, Players[REMAINING].CharacterBody.Body.head.HM.getPositionX() - 15, Players[REMAINING].CharacterBody.Body.head.HM.getPositionY() - 35, 30, 30)
+      image(Images.crown, Players[REMAINING[0]].CharacterBody.Body.head.HM.getPositionX() - 15, Players[REMAINING[0]].CharacterBody.Body.head.HM.getPositionY() - 35, 30, 30)
     }
 
     return this
