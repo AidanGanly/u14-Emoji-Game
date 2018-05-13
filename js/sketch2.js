@@ -23,6 +23,12 @@ class CharacterClass {
     this.ExplosionY     = 0
 
     this.size           = 20
+
+    this.LeftInit = 0
+    this.RightInit = 0
+
+    this.hasFireLeft = false
+    this.hasFireRight = false
   }
 
   manipulateCharacter(DIR){
@@ -229,6 +235,8 @@ class CharacterClass {
          _this.LEFT_X = 0
        }
     }
+
+    return this
   }
 
   initCharacter(){
@@ -431,6 +439,55 @@ class CharacterClass {
   get CharacterBody(){
     return this.Character
   }
+
+  displayKeysAboveCharacter(){
+    //console.log(this.KEYS)
+    let BaseX = this.Character.Body.head.HM.getPositionX() - 10
+    let BaseY = this.Character.Body.head.HM.getPositionY() - 50
+
+    image(Images.Binds[this.ID][0], BaseX - 20, BaseY, 20, 20) // Left
+    image(Images.Binds[this.ID][1], BaseX + 20, BaseY, 20, 20) // Right
+    image(Images.Binds[this.ID][2], BaseX, BaseY - 20, 20, 20) // Up
+    image(Images.Binds[this.ID][3], BaseX, BaseY, 20, 20) // Down
+
+    //
+
+    image(Images.rocket_left, BaseX - this.LeftInit - (20 * 3), BaseY, 20, 20)
+    image(Images.rocket_right, BaseX - this.RightInit + (20 * 3), BaseY, 20, 20)
+
+    //
+
+    if (this.hasFireLeft){
+      image(Images.shoot_fire, BaseX - (20 * 2), BaseY, 20, 20) // Shoot_Left
+    } else {
+      image(Images.shoot, BaseX - (20 * 2), BaseY, 20, 20) // Shoot_Left
+    }
+
+    if (this.hasFireRight){
+      image(Images.shoot_fire, BaseX + (20 * 2), BaseY, 20, 20) // Shoot_Left
+    } else {
+      image(Images.shoot, BaseX + (20 * 2), BaseY, 20, 20) // Shoot_Left
+    }
+
+    this.LeftInit += 10;
+    this.RightInit -= 10;
+
+    if (this.RightInit * -1 > width + 50){
+      this.RightInit = 0
+      this.hasFireRight = true
+      setTimeout(function(){
+        this.hasFireRight = false
+      }.bind(this), 200)
+    }
+
+    if (this.LeftInit > width - BaseX/3.65){
+      this.LeftInit = 0
+      this.hasFireLeft = true
+      setTimeout(function(){
+        this.hasFireLeft = false
+      }.bind(this), 200)
+    }
+  }
 }
 
 class Map {
@@ -602,7 +659,30 @@ function setup() {
     fire         : loadImage("images/fire.png"),
     P1           : loadImage("images/P1.png"),
     P2           : loadImage("images/P2.png"),
-    P3           : loadImage("images/P3.png")
+    P3           : loadImage("images/P3.png"),
+    shoot        : loadImage("images/controls/shoot.png"),
+    shoot_fire   : loadImage("images/controls/shoot_fire.png"),
+
+    Binds : [
+      [
+        loadImage("images/controls/a.png"), // Left
+        loadImage("images/controls/d.png"), // Right
+        loadImage("images/controls/w.png"), // Up
+        loadImage("images/controls/s.png"), // Down
+      ],
+      [
+        loadImage("images/controls/j.png"), // Left
+        loadImage("images/controls/l.png"), // Right
+        loadImage("images/controls/i.png"), // Up
+        loadImage("images/controls/k.png"), // Down
+      ],
+      [
+        loadImage("images/controls/left.png"), // Left
+        loadImage("images/controls/right.png"), // Right
+        loadImage("images/controls/up.png"), // Up
+        loadImage("images/controls/down.png"), // Down
+      ],
+    ]
   }
 
   Players = [
@@ -621,7 +701,7 @@ function setup() {
     }),
 
     new CharacterClass({Matter : matter})
-    .setSpawn(690, 70)
+    .setSpawn(800, 88)
     .initCharacter()
     .setID(1)
     .setSymbol(Images.P2)
@@ -664,6 +744,7 @@ function draw() {
     Players[Char]
     .createCharacter()
     .listenKeys()
+    .displayKeysAboveCharacter()
   }
 }
 
