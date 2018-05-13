@@ -76,3 +76,4 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | Added expandable system, to place emojis where phyiscal instances should be | 1 MAY |
 | Downsized characters by half | 2 MAY |
 | Added functionality to have the barriers move | 12 MAY |
+| Added emojis that displayed the controls | 13 MAY |
