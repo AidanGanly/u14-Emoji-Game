@@ -28,6 +28,8 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | Create the map | ✅ |
 | Create win/loose conditions | ✅ |
 | Create main menu | ✅ |
+| Implement win screen | ✅ |
+| Implement method to display controls | ✅ |
 
 
 
