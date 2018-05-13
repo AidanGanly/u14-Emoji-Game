@@ -471,6 +471,18 @@ class CharacterClass {
       })
     })
 
+    if (REMAINING.length === 1){
+      image(Images.crown, width/2 - 100, height/2, 100, 100)
+      image(Players[REMAINING].symbol, width/2, height/2, 100, 100)
+      image(Images.crown, width/2 + 100, height/2, 100, 100)
+
+      //
+
+      image(Images.repeat, width/2 - 100, height/2 + 100, 100, 100)
+      image(Images.keyboard, width/2, height/2 + 100, 100, 100)
+      image(Images.repeat_p, width/2 + 100, height/2 + 100, 100, 100)
+    }
+
     return this
   }
 
@@ -480,6 +492,20 @@ class CharacterClass {
 
   get symbol(){
     return this.display_symbol
+  }
+
+  getLifeStatus(){
+    if (DEAD.length === 2){
+      for (var n in DEAD){
+        var current = DEAD[n]
+        if (REMAINING.length === 0){
+          if (current === 1) REMAINING.push(0)
+          if (current === 2) REMAINING.push(1)
+          if (current === 3) REMAINING.push(2)
+        }
+      }
+    }
+    return this
   }
 
   displayKeysAboveCharacter(){
@@ -562,6 +588,8 @@ class CharacterClass {
 
       this.displayQuartile++;
     }
+
+    return this
   }
 }
 
@@ -746,7 +774,12 @@ function setup() {
     zero  : loadImage("images/controls/0.png"),
     end   : loadImage("images/controls/!.png"),
 
+    repeat     : loadImage("images/repeat.png"),
+    repeat_p   : loadImage("images/controls/p_restart.png"),
+    keyboard   : loadImage("images/controls/keyboard.png"),
+
     skull : loadImage("images/skull.png"),
+    crown : loadImage("images/crown.png"),
 
     Binds : [
       [
@@ -830,26 +863,7 @@ function draw() {
     .createCharacter()
     .listenKeys()
     .displayKeysAboveCharacter()
-
-    if (DEAD.length === 2){
-      for (var n in DEAD){
-        var current = DEAD[n]
-
-        if (REMAINING.length === 0){
-          if (current === 1) REMAINING.push(0)
-          if (current === 2) REMAINING.push(1)
-          if (current === 3) REMAINING.push(2)
-        }
-
-        // [0, 2]
-      }
-    }
-
-    if (REMAINING.length === 1){
-      image(Images.crown, width/2 - 100, height/2, 100, 100)
-      image(Players[Char].symbol, width/2, height/2, 100, 100)
-      image(Images.crown, width/2 + 100, height/2, 100, 100)
-    }
+    .getLifeStatus()
   }
 }
 
