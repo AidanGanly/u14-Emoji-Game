@@ -671,6 +671,14 @@ function setup() {
     shoot        : loadImage("images/controls/shoot.png"),
     shoot_fire   : loadImage("images/controls/shoot_fire.png"),
 
+    five  : loadImage("images/controls/5.png"),
+    four  : loadImage("images/controls/5.png"),
+    three : loadImage("images/controls/5.png"),
+    two   : loadImage("images/controls/5.png"),
+    one   : loadImage("images/controls/5.png"),
+    zero  : loadImage("images/controls/5.png"),
+    end   : loadImage("images/controls/5.png"),
+
     Binds : [
       [
         loadImage("images/controls/a.png"), // Left
