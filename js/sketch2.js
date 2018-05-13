@@ -29,6 +29,9 @@ class CharacterClass {
 
     this.hasFireLeft = false
     this.hasFireRight = false
+
+    this.displayQuartile = 0
+    this.displayForSeconds = 5
   }
 
   manipulateCharacter(DIR){
@@ -441,51 +444,56 @@ class CharacterClass {
   }
 
   displayKeysAboveCharacter(){
-    //console.log(this.KEYS)
-    let BaseX = this.Character.Body.head.HM.getPositionX() - 10
-    let BaseY = this.Character.Body.head.HM.getPositionY() - 50
 
-    image(Images.Binds[this.ID][0], BaseX - 20, BaseY, 20, 20) // Left
-    image(Images.Binds[this.ID][1], BaseX + 20, BaseY, 20, 20) // Right
-    image(Images.Binds[this.ID][2], BaseX, BaseY - 20, 20, 20) // Up
-    image(Images.Binds[this.ID][3], BaseX, BaseY, 20, 20) // Down
+    if (!(this.displayQuartile > this.displayForSeconds * 60)){
 
-    //
+      let BaseX = this.Character.Body.head.HM.getPositionX() - 10
+      let BaseY = this.Character.Body.head.HM.getPositionY() - 50
 
-    image(Images.rocket_left, BaseX - this.LeftInit - (20 * 3), BaseY, 20, 20)
-    image(Images.rocket_right, BaseX - this.RightInit + (20 * 3), BaseY, 20, 20)
+      image(Images.Binds[this.ID][0], BaseX - 20, BaseY, 20, 20) // Left
+      image(Images.Binds[this.ID][1], BaseX + 20, BaseY, 20, 20) // Right
+      image(Images.Binds[this.ID][2], BaseX, BaseY - 20, 20, 20) // Up
+      image(Images.Binds[this.ID][3], BaseX, BaseY, 20, 20) // Down
 
-    //
+      //
 
-    if (this.hasFireLeft){
-      image(Images.shoot_fire, BaseX - (20 * 2), BaseY, 20, 20) // Shoot_Left
-    } else {
-      image(Images.shoot, BaseX - (20 * 2), BaseY, 20, 20) // Shoot_Left
-    }
+      image(Images.rocket_left, BaseX - this.LeftInit - (20 * 3), BaseY, 20, 20)
+      image(Images.rocket_right, BaseX - this.RightInit + (20 * 3), BaseY, 20, 20)
 
-    if (this.hasFireRight){
-      image(Images.shoot_fire, BaseX + (20 * 2), BaseY, 20, 20) // Shoot_Left
-    } else {
-      image(Images.shoot, BaseX + (20 * 2), BaseY, 20, 20) // Shoot_Left
-    }
+      //
 
-    this.LeftInit += 10;
-    this.RightInit -= 10;
+      if (this.hasFireLeft){
+        image(Images.shoot_fire, BaseX - (20 * 2), BaseY, 20, 20) // Shoot_Left
+      } else {
+        image(Images.shoot, BaseX - (20 * 2), BaseY, 20, 20) // Shoot_Left
+      }
 
-    if (this.RightInit * -1 > width + 50){
-      this.RightInit = 0
-      this.hasFireRight = true
-      setTimeout(function(){
-        this.hasFireRight = false
-      }.bind(this), 200)
-    }
+      if (this.hasFireRight){
+        image(Images.shoot_fire, BaseX + (20 * 2), BaseY, 20, 20) // Shoot_Left
+      } else {
+        image(Images.shoot, BaseX + (20 * 2), BaseY, 20, 20) // Shoot_Left
+      }
 
-    if (this.LeftInit > width - BaseX/3.65){
-      this.LeftInit = 0
-      this.hasFireLeft = true
-      setTimeout(function(){
-        this.hasFireLeft = false
-      }.bind(this), 200)
+      this.LeftInit += 10;
+      this.RightInit -= 10;
+
+      if (this.RightInit * -1 > width + 50){
+        this.RightInit = 0
+        this.hasFireRight = true
+        setTimeout(function(){
+          this.hasFireRight = false
+        }.bind(this), 200)
+      }
+
+      if (this.LeftInit > width - BaseX/3.65){
+        this.LeftInit = 0
+        this.hasFireLeft = true
+        setTimeout(function(){
+          this.hasFireLeft = false
+        }.bind(this), 200)
+      }
+
+      this.displayQuartile++;
     }
   }
 }
