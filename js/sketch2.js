@@ -9,8 +9,13 @@ const SETTINGS = {
   }
 }
 
-var DEAD = []
-var REMAINING = []
+var ALIVE = {
+  Player1 : true,
+  Player2 : true,
+  Player3 : true
+}
+
+var [DEAD, REMAINING] = [[], []]
 
 class CharacterClass {
   constructor(ENV){
@@ -462,6 +467,15 @@ class CharacterClass {
               if (_this.ShouldDisplayDeath === false){
                 _this.displayDeath = true
                 DEAD.push(_this.ID)
+
+                if (_this.ID === 0){
+                  ALIVE.Player1 = false
+                } else if (_this.ID === 1) {
+                  ALIVE.Player2 = false
+                } else if (_this.ID === 2) {
+                  ALIVE.Player3 = false
+                }
+
                 setTimeout(function(){
                   _this.displayDeath  = false
                 }, SETTINGS.TIMING.displayDeath)
@@ -491,7 +505,7 @@ class CharacterClass {
   displayAllocatedWinner(){
     var _this = this
 
-    if (REMAINING.length === 1){
+    if (DEAD.length > 1){
       if (this.HasLengthMovement){
         setTimeout(function(){
           _this.changeHeight = 0
@@ -520,15 +534,10 @@ class CharacterClass {
   }
 
   getLifeStatus(){
-    if (DEAD.length === 2){
-      for (var n in DEAD){
-        var current = DEAD[n]
-        if (REMAINING.length === 0){
-          if (current === 1) REMAINING.push(0)
-          if (current === 2) REMAINING.push(1)
-          if (current === 3) REMAINING.push(2)
-        }
-      }
+    if (DEAD.length > 1){
+      if (ALIVE.Player1) REMAINING.push(0)
+      if (ALIVE.Player2) REMAINING.push(1)
+      if (ALIVE.Player3) REMAINING.push(2)
     }
     return this
   }
