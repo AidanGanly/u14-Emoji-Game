@@ -6,6 +6,8 @@ const SETTINGS = {
   }
 }
 
+var DEAD = []
+
 class CharacterClass {
   constructor(ENV){
     this.ENV = ENV
@@ -31,7 +33,12 @@ class CharacterClass {
     this.hasFireRight = false
 
     this.displayQuartile = 0
-    this.displayForSeconds = 5
+    this.displayForSeconds = 6
+
+    this.parts = 0
+
+    this.ShouldDisplayDeath = false
+    this.displayDeath = false
   }
 
   manipulateCharacter(DIR){
@@ -90,6 +97,7 @@ class CharacterClass {
   }
 
   listenKeys(){
+    if (Math.round(this.displayQuartile/60) < 6) return this
     let _this = this
 
     if (_this.PlaceExplosion === true && _this.PlaceExplosionIteration < 20){
@@ -244,6 +252,7 @@ class CharacterClass {
 
   initCharacter(){
 
+    let _this = this
     var [x,y] = [this.x, this.y]
 
     this.Character = {
@@ -436,6 +445,31 @@ class CharacterClass {
       })
     });
 
+    _.each(this.Character.Body, function(ARRAY){
+      _.each(ARRAY, function(DATA, NAME){
+        switch(NAME){
+          case '__COLOUR':
+            break;
+          default:
+            if (DATA.isOffCanvas(120)){
+              if (_this.ShouldDisplayDeath === false){
+                _this.displayDeath = true
+                DEAD.push(_this.ID)
+                setTimeout(function(){
+                  _this.displayDeath  = false
+                }, 2000)
+                _this.ShouldDisplayDeath = true
+              }
+              if (_this.displayDeath === true){
+                image(Images.skull, width/2 - 100, height/2, 100, 100)
+                image(_this.display_symbol, width/2, height/2, 100, 100)
+                image(Images.skull, width/2 + 100, height/2, 100, 100)
+              }
+            }
+        }
+      })
+    })
+
     return this
   }
 
@@ -491,6 +525,34 @@ class CharacterClass {
         setTimeout(function(){
           this.hasFireLeft = false
         }.bind(this), 200)
+      }
+
+      // Countdown
+
+      switch(Math.round(this.displayQuartile/60)){
+        case 0:
+          image(Images.five, width/2, height/2, 100, 100)
+          break
+        case 1:
+          image(Images.four, width/2, height/2, 100, 100)
+          break
+        case 2:
+          image(Images.three, width/2, height/2, 100, 100)
+          break
+        case 3:
+          image(Images.two, width/2, height/2, 100, 100)
+          break
+        case 4:
+          image(Images.one, width/2, height/2, 100, 100)
+          break
+        case 5:
+          image(Images.zero, width/2, height/2, 100, 100)
+          break
+        case 6:
+          image(Images.end, width/2 + 100, height/2, 100, 100)
+          image(Images.end, width/2, height/2, 100, 100)
+          image(Images.end, width/2 - 100, height/2, 100, 100)
+          break
       }
 
       this.displayQuartile++;
@@ -672,12 +734,14 @@ function setup() {
     shoot_fire   : loadImage("images/controls/shoot_fire.png"),
 
     five  : loadImage("images/controls/5.png"),
-    four  : loadImage("images/controls/5.png"),
-    three : loadImage("images/controls/5.png"),
-    two   : loadImage("images/controls/5.png"),
-    one   : loadImage("images/controls/5.png"),
-    zero  : loadImage("images/controls/5.png"),
-    end   : loadImage("images/controls/5.png"),
+    four  : loadImage("images/controls/4.png"),
+    three : loadImage("images/controls/3.png"),
+    two   : loadImage("images/controls/2.png"),
+    one   : loadImage("images/controls/1.png"),
+    zero  : loadImage("images/controls/0.png"),
+    end   : loadImage("images/controls/!.png"),
+
+    skull : loadImage("images/skull.png"),
 
     Binds : [
       [
@@ -761,6 +825,12 @@ function draw() {
     .createCharacter()
     .listenKeys()
     .displayKeysAboveCharacter()
+
+    if (DEAD.length === 2){
+      for (var n in DEAD){
+        console.log(DEAD[n])
+      }
+    }
   }
 }
 
