@@ -80,3 +80,4 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | Added functionality to have the barriers move | 12 MAY |
 | Added emojis that displayed the controls | 13 MAY |
 | Added win loose conditions | 13 MAY |
+| Added win menu | 13 MAY |
