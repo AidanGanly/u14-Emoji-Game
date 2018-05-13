@@ -3,6 +3,9 @@ const SETTINGS = {
     CHARACTER : {
       MoveLegsOnWalk : true
     }
+  },
+  TIMING: {
+    displayDeath : 2000
   }
 }
 
@@ -27,19 +30,22 @@ class CharacterClass {
 
     this.size           = 20
 
-    this.LeftInit = 0
+    this.LeftInit  = 0
     this.RightInit = 0
 
-    this.hasFireLeft = false
-    this.hasFireRight = false
+    this.hasFireLeft   = false
+    this.hasFireRight  = false
 
-    this.displayQuartile = 0
+    this.displayQuartile   = 0
     this.displayForSeconds = 6
 
     this.parts = 0
 
     this.ShouldDisplayDeath = false
-    this.displayDeath = false
+    this.displayDeath       = false
+
+    this.HasLengthMovement  = true
+    this.changeHeight       = 100
   }
 
   manipulateCharacter(DIR){
@@ -458,7 +464,7 @@ class CharacterClass {
                 DEAD.push(_this.ID)
                 setTimeout(function(){
                   _this.displayDeath  = false
-                }, 2000)
+                }, SETTINGS.TIMING.displayDeath)
                 _this.ShouldDisplayDeath = true
               }
               if (_this.displayDeath === true){
@@ -471,18 +477,6 @@ class CharacterClass {
       })
     })
 
-    if (REMAINING.length === 1){
-      image(Images.crown, width/2 - 100, height/2, 100, 100)
-      image(Players[REMAINING].symbol, width/2, height/2, 100, 100)
-      image(Images.crown, width/2 + 100, height/2, 100, 100)
-
-      //
-
-      image(Images.repeat, width/2 - 100, height/2 + 100, 100, 100)
-      image(Images.keyboard, width/2, height/2 + 100, 100, 100)
-      image(Images.repeat_p, width/2 + 100, height/2 + 100, 100, 100)
-    }
-
     return this
   }
 
@@ -492,6 +486,36 @@ class CharacterClass {
 
   get symbol(){
     return this.display_symbol
+  }
+
+  displayAllocatedWinner(){
+    var _this = this
+
+    if (REMAINING.length === 1){
+      if (this.HasLengthMovement){
+        setTimeout(function(){
+          _this.changeHeight = 0
+        }, SETTINGS.TIMING.displayDeath)
+        _this.HasLengthMovement = false
+      }
+
+      image(Players[REMAINING].symbol, width/2, height/2 - _this.changeHeight, 100, 100)
+
+      image(Images.crown, width/2 + 100, height/2 - _this.changeHeight, 100, 100)
+      image(Images.crown, width/2 - 100, height/2 - _this.changeHeight, 100, 100)
+
+      //
+
+      image(Images.repeat, width/2 - 100, height/2 + 100, 100, 100)
+      image(Images.keyboard, width/2, height/2 + 100, 100, 100)
+      image(Images.repeat_p, width/2 + 100, height/2 + 100, 100, 100)
+
+      //
+
+      image(Images.crown, Players[REMAINING].CharacterBody.Body.head.HM.getPositionX() - 15, Players[REMAINING].CharacterBody.Body.head.HM.getPositionY() - 35, 30, 30)
+    }
+
+    return this
   }
 
   getLifeStatus(){
@@ -864,6 +888,7 @@ function draw() {
     .listenKeys()
     .displayKeysAboveCharacter()
     .getLifeStatus()
+    .displayAllocatedWinner()
   }
 }
 
