@@ -7,6 +7,7 @@ const SETTINGS = {
 }
 
 var DEAD = []
+var REMAINING = []
 
 class CharacterClass {
   constructor(ENV){
@@ -477,6 +478,10 @@ class CharacterClass {
     return this.Character
   }
 
+  get symbol(){
+    return this.display_symbol
+  }
+
   displayKeysAboveCharacter(){
 
     if (!(this.displayQuartile > this.displayForSeconds * 60)){
@@ -828,8 +833,22 @@ function draw() {
 
     if (DEAD.length === 2){
       for (var n in DEAD){
-        console.log(DEAD[n])
+        var current = DEAD[n]
+
+        if (REMAINING.length === 0){
+          if (current === 1) REMAINING.push(0)
+          if (current === 2) REMAINING.push(1)
+          if (current === 3) REMAINING.push(2)
+        }
+
+        // [0, 2]
       }
+    }
+
+    if (REMAINING.length === 1){
+      image(Images.crown, width/2 - 100, height/2, 100, 100)
+      image(Players[Char].symbol, width/2, height/2, 100, 100)
+      image(Images.crown, width/2 + 100, height/2, 100, 100)
     }
   }
 }
