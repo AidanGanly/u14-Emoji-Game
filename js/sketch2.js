@@ -862,8 +862,8 @@ function setup() {
       RIGHT:       76,  // L
       UP:          73,  // I
       DOWN:        75,  // K
-      SHOOT_LEFT:  72,  // H
-      SHOOT_RIGHT: 186, // ;
+      SHOOT_LEFT:  186,  // H
+      SHOOT_RIGHT: 72, // ;
     }),
 
     new CharacterClass({Matter : matter})
