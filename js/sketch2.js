@@ -876,7 +876,7 @@ function setup() {
       RIGHT:       RIGHT_ARROW,
       UP:          UP_ARROW,
       DOWN:        DOWN_ARROW,
-      SHOOT_LEFT:  45,
+      SHOOT_LEFT:  16,
       SHOOT_RIGHT: 17
     }),
   ]
