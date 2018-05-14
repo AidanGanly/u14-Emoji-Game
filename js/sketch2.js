@@ -128,15 +128,19 @@ class CharacterClass {
     if (keyIsDown(_this.KEYS.LEFT)) {
       _this.manipulateCharacter('LEFT')
     }
+
     if (keyIsDown(_this.KEYS.RIGHT)) {
       _this.manipulateCharacter('RIGHT')
     }
+
     if (keyIsDown(_this.KEYS.UP)) {
       _this.manipulateCharacter('UP')
     }
+
     if (keyIsDown(_this.KEYS.DOWN)) {
       _this.manipulateCharacter('RESET')
     }
+
     if (keyIsDown(_this.KEYS.SHOOT_RIGHT)) {
       var STARTED_AT = _this.Character.Body.right_arm.R1.getPositionX()
       _this.RIGHT_X = _this.RIGHT_X - 30
@@ -193,12 +197,12 @@ class CharacterClass {
        })
      }
    } else {
-       if (!keyIsDown(_this.KEYS.SHOOT_LEFT)){
+       if (!(keyIsDown(_this.KEYS.SHOOT_LEFT) || keyIsDown(_this.KEYS.SHOOT_LEFT[0]) || keyIsDown(_this.KEYS.SHOOT_LEFT[1]))){
          _this.RIGHT_X = 0
        }
     }
 
-    if (keyIsDown(_this.KEYS.SHOOT_LEFT)) {
+    if (keyIsDown(_this.KEYS.SHOOT_LEFT) || keyIsDown(_this.KEYS.SHOOT_LEFT[0]) || keyIsDown(_this.KEYS.SHOOT_LEFT[1])) {
 
       var STARTED_AT = _this.Character.Body.left_arm.L1.getPositionX()
       _this.LEFT_X = _this.LEFT_X + 30;
@@ -876,7 +880,7 @@ function setup() {
       RIGHT:       RIGHT_ARROW,
       UP:          UP_ARROW,
       DOWN:        DOWN_ARROW,
-      SHOOT_LEFT:  16,
+      SHOOT_LEFT:  [16, 45], // 45 which is 0 on the numpad isn't mapped on some laptops
       SHOOT_RIGHT: 17
     }),
   ]
