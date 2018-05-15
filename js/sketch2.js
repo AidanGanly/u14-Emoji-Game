@@ -6,6 +6,9 @@ const SETTINGS = {
   },
   TIMING: {
     displayDeath : 2000
+  },
+  HEIGHT : {
+    M_UP: 100
   }
 }
 
@@ -653,58 +656,58 @@ class Map {
         __floors : {
           upper_floor1 : [
             Images.chain,
-            matter.makeBarrier((width/2), 600 + 60, width/1.32, 40),
+            matter.makeBarrier((width/2), 600 + SETTINGS.HEIGHT.M_UP, width/1.32, 40),
             20,
             ['STATIC']
           ],
           upper_floor2 : [
             Images.chain,
-            matter.makeBarrier(20, 600 + 60, 300, 40),
+            matter.makeBarrier(20, 600 + SETTINGS.HEIGHT.M_UP, 300, 40),
             20,
             {
               x: [-50, 200, 200],
               y: ['STATIC'], //from, to, start
               current: 'MOVE_UP', // It's at 200, so move up to 300
               speed: 0.1, // speed at which things move
-              cache: {x: 20, y: 400 + 60}, // initial x,y
+              cache: {x: 20, y: 400 + SETTINGS.HEIGHT.M_UP}, // initial x,y
               offset: 300 // unused
             }
           ],
           upper_floor3 : [
             Images.chain,
-            matter.makeBarrier(335, 340 + 60, 300, 40),
+            matter.makeBarrier(335, 340 + SETTINGS.HEIGHT.M_UP, 300, 40),
             20,
             ['STATIC']
           ],
           upper_floor4 : [
             Images.chain,
-            matter.makeBarrier(660, 340 + 60, 600, 40),
+            matter.makeBarrier(660, 340 + SETTINGS.HEIGHT.M_UP, 600, 40),
             20,
             {
               x: ['STATIC'],
               y: [0, 200, 0], //from, to, start
               current: 'MOVE_UP', // It's at 200, so move up to 300
               speed: 0.1, // speed at which things move
-              cache: {x: 800, y: 340 + 60}, // initial x,y
+              cache: {x: 800, y: 340 + SETTINGS.HEIGHT.M_UP}, // initial x,y
               offset: 300 // unused
             }
           ],
           upper_floor5 : [
             Images.chain,
-            matter.makeBarrier(730, 130 + 60, 1100, 40),
+            matter.makeBarrier(730, 130 + SETTINGS.HEIGHT.M_UP, 1100, 40),
             20,
             ['STATIC']
           ],
           upper_floor6 : [
             Images.chain,
-            matter.makeBarrier(1400, 360 + 60, 200, 40),
+            matter.makeBarrier(1400, 360 + SETTINGS.HEIGHT.M_UP, 200, 40),
             20,
             {
               x: [0, 220, 200],
               y: ['STATIC'], //from, to, start
               current: 'MOVE_UP', // It's at 200, so move up to 300
               speed: 0.3, // speed at which things move
-              cache: {x: 1400, y: 140 + 60}, // initial x,y
+              cache: {x: 1400, y: 140 + SETTINGS.HEIGHT.M_UP}, // initial x,y
               offset: 300 // unused
             }
           ],
@@ -783,7 +786,7 @@ function setup() {
   matter.mouseInteraction(
     createCanvas(
       1536 - 40,
-      759  - 20
+      859  - 20
      )
   );
 
@@ -843,7 +846,7 @@ function setup() {
 
   Players = [
     new CharacterClass({Matter : matter})
-    .setSpawn(380, 308)
+    .setSpawn(380, 378)
     .initCharacter()
     .setID(0)
     .setSymbol(Images.P1)
