@@ -20,6 +20,8 @@ var ALIVE = {
 
 var [DEAD, REMAINING] = [[], []]
 
+var SHAKE = () => $("canvas").effect( "shake", { direction: (Math.random() < 0.3 ? 'up' : Math.random() > 0.7 ? 'left' : 'right'), times: 3, distance: 10});
+
 class CharacterClass {
   constructor(ENV){
     this.ENV = ENV
@@ -54,6 +56,8 @@ class CharacterClass {
 
     this.HasLengthMovement  = true
     this.changeHeight       = 100
+
+    this.canShake = true
   }
 
   manipulateCharacter(DIR){
@@ -170,6 +174,14 @@ class CharacterClass {
                 if (BPX_OPX > BPY_OPY){ BPX_ODF = BPX_OPX - BPY_OPY } else { BPX_ODF = BPY_OPY - BPX_OPX }
 
                 if ((BPX_ODF > -5 && BPX_ODF < 5) && (BPX_OPX < 30 && BPY_OPY < 30)){
+                  if (_this.canShake === true){
+                    _this.canShake = false
+                    SHAKE()
+                    setTimeout(function(){
+                      _this.canShake = true
+                    }, 350)
+                  }
+
                   let Force = (Math.abs(_this.RIGHT_X, OpposingX)) / (1000)
                   DATA.body.force.x = - 0.015
 
@@ -232,7 +244,13 @@ class CharacterClass {
                 if (BPX_OPX > BPY_OPY){ BPX_ODF = BPX_OPX - BPY_OPY } else { BPX_ODF = BPY_OPY - BPX_OPX }
 
                 if ((BPX_ODF > -5 && BPX_ODF < 5) && (BPX_OPX < 30 && BPY_OPY < 30)){
-
+                  if (_this.canShake === true){
+                    _this.canShake = false
+                    SHAKE()
+                    setTimeout(function(){
+                      _this.canShake = true
+                    }, 350)
+                  }
                   let Force = (Math.abs(_this.LEFT_REAL_X, OpposingX)) / (1000)
                   DATA.body.force.x = 0.015
                   _this.LEFT_X = 0
