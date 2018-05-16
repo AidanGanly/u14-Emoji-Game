@@ -60,6 +60,9 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 | Minify code, do away with redundent CDNs like underscore - reducing load time | ❌ |
 | Use ternary operators to increase code effeciency | ❌ |
 
+#### Feedback
+Ben Stotesbury; Spawn players in random locations
+
 #### Update log
 | Task | Date |
 | ---- | ------- |
