@@ -3,24 +3,54 @@
 
   <head>
     <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet">
   </head>
   <style>
-  	html, body {
+    html, body {
   	   background-color: white;
        overflow: hidden;
   	}
 
-  	canvas {
+    p, a {
+      font-size: 300%;
+      color: #212121;
+      margin-top: 100px;
+      text-align: center;
+      font-family: 'Oxygen', sans-serif;
+    }
+
+    canvas {
 	     position: absolute;
 	     top:    0;
 	     bottom: 0;
 	     left:   0;
 	     right:  0;
 	     margin: auto;
-
-       box-shadow: 0px 0px 100px rgba(0.5, 0.5, 0.5, 0.9);
        border-radius: 10px;
-	}
+       box-shadow:    0px 0px 100px rgba(0.5, 0.5, 0.5, 0.9);
+       opacity: 1;
+       animation: fadeBoxShadow 0.45s;
+    }
+
+    @keyframes fadeBoxShadow {
+    	0% {
+    		opacity:    0;
+        box-shadow: 0 0 10 rgba(0, 0, 0, 0);
+    	}
+    	100% {
+    		opacity:    1;
+        box-shadow: 0px 0px 100px rgba(0.5, 0.5, 0.5, 0.9);
+    	}
+    }
+
+    img {
+      position: absolute;
+      top:    0;
+      bottom: 0;
+      left:   0;
+      right:  0;
+      margin: auto;
+    }
   </style>
   <body>
     <script src = "lib/p5.js/0.5.11/p5.min.js"></script>
@@ -32,5 +62,9 @@
     <script src = "http://code.jquery.com/jquery-1.12.4.js"></script>
     <script src = "http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src = "js/sketch2.js"></script>
+    <div id="p5_loading">
+      <p>Loading assets...</p>
+      <img src = "frontend/bg.png"></img>
+    </div>
   </body>
 </html>

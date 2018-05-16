@@ -538,7 +538,6 @@ class CharacterClass {
         _this.HasLengthMovement = false
       }
 
-
       image(Players[REMAINING[0]].symbol, width/2, height/2 - _this.changeHeight, 100, 100)
 
       image(Images.crown, width/2 + 100, height/2 - _this.changeHeight, 100, 100)
@@ -800,14 +799,7 @@ class Map {
   }
 }
 
-function setup() {
-  matter.mouseInteraction(
-    createCanvas(
-      1536 - 40,
-      859  - 20
-     )
-  );
-
+function preload(){
   Images = {
     black_square : loadImage("images/black_square.png"),
     pistol_left  : loadImage("images/pistol_left.png"),
@@ -861,10 +853,19 @@ function setup() {
       ],
     ]
   }
+}
+
+function setup() {
+  matter.mouseInteraction(
+    createCanvas(
+      1536 - 40,
+      859  - 20
+     )
+  );
 
   Players = [
     new CharacterClass({Matter : matter})
-    .setSpawn(380, 378)
+    .setSpawn(380, 400)
     .initCharacter()
     .setID(0)
     .setSymbol(Images.P1)
@@ -878,7 +879,7 @@ function setup() {
     }),
 
     new CharacterClass({Matter : matter})
-    .setSpawn(800, 88)
+    .setSpawn(800, 165)
     .initCharacter()
     .setID(1)
     .setSymbol(Images.P2)
@@ -892,7 +893,7 @@ function setup() {
     }),
 
     new CharacterClass({Matter : matter})
-    .setSpawn(1206, 620)
+    .setSpawn(1206, 645)
     .initCharacter()
     .setID(2)
     .setSymbol(Images.P3)
@@ -927,7 +928,7 @@ function draw() {
   }
 }
 
-// Allows user to reload the page by pressing ctrl + p
+// Allows user to reload the page by pressing  p
 onkeydown = function(e){
   if (e.ctrlKey){
      e.preventDefault()
