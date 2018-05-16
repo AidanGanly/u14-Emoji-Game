@@ -11,17 +11,6 @@
        overflow: hidden;
   	}
 
-    p, a {
-      font-size: 300%;
-      color: #212121;
-      margin-top: 100px;
-      text-align: center;
-      font-family: 'Oxygen', sans-serif;
-      z-index: 9999 !important;
-      mix-blend-mode: difference;
-
-    }
-
     canvas {
 	     position: absolute;
 	     top:    0;
@@ -32,7 +21,7 @@
        border-radius: 10px;
        box-shadow:    0px 0px 100px rgba(0.5, 0.5, 0.5, 0.9);
        opacity: 1;
-       animation: fadeBoxShadow 0.45s;
+       animation: fadeBoxShadow 1s;
     }
 
     @keyframes fadeBoxShadow {
@@ -67,7 +56,6 @@
     <script src = "js/sketch2.js"></script>
     <div id="p5_loading">
       <img src = "frontend/bg.png"></img>
-      <p>Loading assets...</p>
     </div>
   </body>
 </html>
