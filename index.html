@@ -9,6 +9,7 @@
     html, body {
   	   background-color: white;
        overflow: hidden;
+       background-color: #3498db
   	}
 
     canvas {
@@ -43,6 +44,31 @@
       right:  0;
       margin: auto;
     }
+
+    .bottom {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      background-color: #2980b9;
+      font-family: 'Oxygen', sans-serif;
+      width: 100%;
+      color: #dcdde1;
+      text-align: center;
+    }
+
+    .bottom h1 {
+      text-align: center;
+      font-weight: 300
+    }
+
+    .bottom a {
+      color: white;
+      text-decoration:none;
+    }
+
+    .bottom a:hover {
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2)
+    }
   </style>
   <body>
     <script src = "lib/p5.js/0.5.11/p5.min.js"></script>
@@ -56,6 +82,9 @@
     <script src = "js/sketch2.js"></script>
     <div id="p5_loading">
       <img src = "frontend/bg.png"></img>
+    </div>
+    <div class="bottom">
+      <h1>A project by <a href="https://slyons.me">Suraj Lyons</a></h1>
     </div>
   </body>
 </html>

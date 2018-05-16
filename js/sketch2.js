@@ -855,6 +855,12 @@ function preload(){
   }
 }
 
+const getSpawn = () => [
+    [300, 400],
+    [800, 165],
+  [1206, 645]
+  ].sort(() => Math.random() - 0.5);
+
 function setup() {
   matter.mouseInteraction(
     createCanvas(
@@ -863,9 +869,11 @@ function setup() {
      )
   );
 
+  let spawnAt = getSpawn()
+
   Players = [
     new CharacterClass({Matter : matter})
-    .setSpawn(380, 400)
+    .setSpawn(spawnAt[0][0], spawnAt[0][1])
     .initCharacter()
     .setID(0)
     .setSymbol(Images.P1)
@@ -879,7 +887,7 @@ function setup() {
     }),
 
     new CharacterClass({Matter : matter})
-    .setSpawn(800, 165)
+    .setSpawn(spawnAt[1][0], spawnAt[1][1])
     .initCharacter()
     .setID(1)
     .setSymbol(Images.P2)
@@ -893,7 +901,7 @@ function setup() {
     }),
 
     new CharacterClass({Matter : matter})
-    .setSpawn(1206, 645)
+    .setSpawn(spawnAt[2][0], spawnAt[2][1])
     .initCharacter()
     .setID(2)
     .setSymbol(Images.P3)
