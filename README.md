@@ -84,3 +84,4 @@ Ben Stotesbury; Spawn players in random locations
 | Added emojis that displayed the controls | 13 MAY |
 | Added win loose conditions | 13 MAY |
 | Added win menu | 13 MAY |
+| Added sound effects | 17 MAY |
