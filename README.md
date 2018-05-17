@@ -45,7 +45,7 @@ About; Real time game, played on the same keyboard with 3 players. Each battles 
 #### Testing
 | Task | Completed/progress |
 | ------------- | --------- |
-| Test with 3 players | ❌ |
+| Test with 3 players | ✅ |
 
 #### Optimization
 
