@@ -67,13 +67,14 @@
     }
 
     .bottom a:hover {
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2)
+      color: red;=
     }
   </style>
   <body>
     <script src = "lib/p5.js/0.5.11/p5.min.js"></script>
     <script src = "lib/matter.js/0.12.0/matter.min.js"></script>
     <script src = "lib/p5-matter/1.1.0/p5-matter.min.js"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/addons/p5.sound.js"></script>
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/keypress/2.1.5/keypress.min.js"></script>
     <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
@@ -82,8 +83,11 @@
     <script src = "js/sketch2.js"></script>
     <div id="p5_loading">
       <img src = "frontend/bg.png"></img>
+      <div class="bottom" style="z-index: 40">
+        <h1>Loading Sharp Gunners</h1>
+      </div>
     </div>
-    <div class="bottom">
+    <div class="bottom" style="z-index: 0">
       <h1>A project by <a href="https://slyons.me">Suraj Lyons</a></h1>
     </div>
   </body>

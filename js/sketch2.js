@@ -12,6 +12,10 @@ const SETTINGS = {
   }
 }
 
+
+var Audios
+var notPlayedWinner = false
+
 var ALIVE = {
   Player1 : true,
   Player2 : true,
@@ -20,7 +24,7 @@ var ALIVE = {
 
 var [DEAD, REMAINING] = [[], []]
 
-var SHAKE = () => $("canvas").effect( "shake", { direction: (Math.random() < 0.3 ? 'up' : Math.random() > 0.7 ? 'left' : 'right'), times: 3, distance: 10});
+var SHAKE = () =>  $("canvas").effect( "shake", { direction: (Math.random() < 0.3 ? 'up' : Math.random() > 0.7 ? 'left' : 'right'), times: 3, distance: 10});
 
 class CharacterClass {
   constructor(ENV){
@@ -153,9 +157,10 @@ class CharacterClass {
       _this.RIGHT_X = _this.RIGHT_X - 30
       _this.RIGHT_REAL_X = _this.RIGHT_X;
 
+      Audios.pew.play();
+
       var BulletPositionX     = ( _this.Character.Body.right_arm.R1.getPositionX() + _this.RIGHT_X )
       var BulletPositionY     = ( (_this.Character.Body.right_arm.R1.getPositionY() - 10) + random(-15, -5) )
-
       image(Images.rocket_left, BulletPositionX, BulletPositionY, this.size, this.size);
 
       for (let Char in Players){
@@ -181,6 +186,8 @@ class CharacterClass {
                       _this.canShake = true
                     }, 350)
                   }
+
+                  Audios.boom.play()
 
                   let Force = (Math.abs(_this.RIGHT_X, OpposingX)) / (1000)
                   DATA.body.force.x = - 0.015
@@ -223,6 +230,8 @@ class CharacterClass {
       _this.LEFT_X = _this.LEFT_X + 30;
       _this.LEFT_REAL_X = 50 + _this.LEFT_X;
 
+      Audios.pew.play();
+
       var BulletPositionX = ( _this.Character.Body.left_arm.L1.getPositionX() + _this.LEFT_X )
       var BulletPositionY = ( (_this.Character.Body.left_arm.L1.getPositionY() - 10) + random(-15, -5) )
 
@@ -251,6 +260,9 @@ class CharacterClass {
                       _this.canShake = true
                     }, 350)
                   }
+
+                  Audios.boom.play()
+
                   let Force = (Math.abs(_this.LEFT_REAL_X, OpposingX)) / (1000)
                   DATA.body.force.x = 0.015
                   _this.LEFT_X = 0
@@ -507,6 +519,7 @@ class CharacterClass {
                 _this.ShouldDisplayDeath = true
               }
               if (_this.displayDeath === true){
+                Audios.failed.play()
                 image(Images.skull, width/2 - 100, height/2, 100, 100)
                 image(_this.display_symbol, width/2, height/2, 100, 100)
                 image(Images.skull, width/2 + 100, height/2, 100, 100)
@@ -537,6 +550,13 @@ class CharacterClass {
         }, SETTINGS.TIMING.displayDeath)
         _this.HasLengthMovement = false
       }
+
+      if (!notPlayedWinner){
+        setTimeout(() => Audios.winner.play(), 2000)
+
+        notPlayedWinner = true
+      }
+
 
       image(Players[REMAINING[0]].symbol, width/2, height/2 - _this.changeHeight, 100, 100)
 
@@ -638,6 +658,7 @@ class CharacterClass {
           image(Images.zero, width/2, height/2, 100, 100)
           break
         case 6:
+          Audios.fight.play();
           image(Images.end, width/2 + 100, height/2, 100, 100)
           image(Images.end, width/2, height/2, 100, 100)
           image(Images.end, width/2 - 100, height/2, 100, 100)
@@ -800,6 +821,16 @@ class Map {
 }
 
 function preload(){
+
+  Audios = {
+    boom : new Audio('audio/boom.ogg'),
+    failed : new Audio('audio/failed.ogg'),
+    fight : new Audio('audio/fight.ogg'),
+    pew : new Audio('audio/pew.ogg'),
+    winner : new Audio('audio/winner.ogg'),
+    music : new Audio('audio/music.mp3'),
+  }
+
   Images = {
     black_square : loadImage("images/black_square.png"),
     pistol_left  : loadImage("images/pistol_left.png"),
@@ -853,12 +884,14 @@ function preload(){
       ],
     ]
   }
+
+  Audios.music.play();
 }
 
 const getSpawn = () => [
     [300, 400],
     [800, 165],
-  [1206, 645]
+    [1206, 645]
   ].sort(() => Math.random() - 0.5);
 
 function setup() {
@@ -870,7 +903,6 @@ function setup() {
   );
 
   let spawnAt = getSpawn()
-
   Players = [
     new CharacterClass({Matter : matter})
     .setSpawn(spawnAt[0][0], spawnAt[0][1])
